@@ -1,7 +1,33 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace AmyDaveWedding.Models
 {
+    //public class BaseRegistrationModel
+    //{
+    //    [Required]
+    //    [Display(Name = "User name")]
+    //    public string UserName { get; set; }
+
+    //    [Display(Name = "Email")]
+    //    public string Email { get; set; }
+
+    //    [Display(Name = "Full name")]
+    //    public string Name { get; set; }
+
+    //    [Display(Name = "Code on invite")]
+    //    public string Code { get; set; }
+
+    //    [Display(Name = "Attending")]
+    //    public bool Attending { get; set; }
+
+    //    [Display(Name = "Plus one")]
+    //    public bool PlusOne { get; set; }
+
+    //    [Display(Name = "Number of children attending")]
+    //    public int ChildCount { get; set; }
+    //}
+
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
@@ -10,6 +36,21 @@ namespace AmyDaveWedding.Models
 
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Display(Name = "Full name")]
+        public string Name { get; set; }
+
+        [Display(Name = "Code on invite")]
+        public string Code { get; set; }
+
+        [Display(Name = "Attending")]
+        public bool Attending { get; set; }
+
+        [Display(Name = "Plus one")]
+        public bool PlusOne { get; set; }
+
+        [Display(Name = "Number of children attending")]
+        public int ChildCount { get; set; }
     }
 
     public class ManageUserViewModel

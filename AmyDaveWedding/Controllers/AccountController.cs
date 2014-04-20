@@ -9,6 +9,12 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using AmyDaveWedding.Models;
+using Microsoft.AspNet.Identity.Owin;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using AmyDaveWedding.Helpers;
+using System.Text;
+using System.Diagnostics;
 
 namespace AmyDaveWedding.Controllers
 {
@@ -196,15 +202,11 @@ namespace AmyDaveWedding.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
-            var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
-
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
             }
-
-            string fullName = result.Identity.Name;
 
             // Sign in the user with this external login provider if the user already has a login
             var user = await UserManager.FindAsync(loginInfo.Login);
@@ -215,11 +217,145 @@ namespace AmyDaveWedding.Controllers
             }
             else
             {
+                var result = await AuthenticationManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
+
                 // If the user does not have an account, then prompt the user to create an account
                 ViewBag.ReturnUrl = returnUrl;
                 ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-                var model = new ExternalLoginConfirmationViewModel { UserName = loginInfo.DefaultUserName };
+                var model = await GetExternalLoginModel(result, loginInfo);
                 return View("ExternalLoginConfirmation", model);
+            }
+        }
+
+        private async Task<ExternalLoginConfirmationViewModel> GetExternalLoginModel(AuthenticateResult result, ExternalLoginInfo loginInfo)
+        {
+            var model = new ExternalLoginConfirmationViewModel() { UserName = loginInfo.DefaultUserName };
+
+            if (loginInfo.Login.LoginProvider == "Facebook")
+            {
+                model.Name = GetClaimValue(result.Identity, "urn:facebook:name");
+            }
+            else if (loginInfo.Login.LoginProvider == "Google")
+            {
+                model.Name = GetClaimValue(result.Identity, "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+                model.Email = GetClaimValue(result.Identity, "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
+            }
+            else if (loginInfo.Login.LoginProvider == "Twitter")
+            {
+                var userInfo = await GetUserDataFromTwitter(model.UserName);
+                if (userInfo != null)
+                {
+                    model.Name = userInfo.FullName;
+                }
+            }
+            return model;
+        }
+
+        private string GetClaimValue( ClaimsIdentity ci, string type )
+        {
+            var claim = ci.Claims.FirstOrDefault(c => c.Type == type);
+            return claim != null ? claim.Value : null;
+        }
+
+        private async Task<SocialUserInfo> GetUserDataFromTwitter(string screenName)
+        {
+            ApiCredential twitterCredentials = ApiCredentialSource.TwitterCredentials;
+
+            string accessToken = twitterCredentials.AccessToken;
+            if (string.IsNullOrWhiteSpace(accessToken))
+            {
+                accessToken = await GetTwitterAccessToken();
+                if (string.IsNullOrWhiteSpace(accessToken))
+                {
+                    return null;
+                }
+                twitterCredentials.AccessToken = accessToken;
+            }
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(@"https://api.twitter.com");
+
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                // client.DefaultRequestHeaders.Add("Accept", "application/json");
+                // client.DefaultRequestHeaders.Add("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+                
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+                HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Get, "/1.1/users/show.json?screen_name=" + screenName);
+                //req.Properties.Add("screen_name", screenName);
+
+                // HttpResponseMessage response = await client.GetAsync("/1.1/users/show.json?screen_name=" + screenName);
+                HttpResponseMessage response = await client.SendAsync(req);
+                if (response.IsSuccessStatusCode)
+                {
+                    dynamic result = await response.Content.ReadAsAsync<dynamic>();
+
+                    //string name = result.name;
+                    //string profileImageUrl = result.profile_image_url;
+                    return new SocialUserInfo { FullName = result.name, ProfileImageUrl = result.profile_image_url };
+                }
+                else
+                {
+                    //dynamic result = await response.Content.ReadAsAsync<dynamic>();
+                    //string resultJsonStr = Convert.ToString(result);
+                    string result = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine("Errored calling {0}: {1}", req.RequestUri, result);
+                    return null;
+                }
+            }
+        }
+
+        private async Task<string> GetTwitterAccessToken()
+        {
+            //string auth = "xvz1evFS4wEEPTGEFPHBog" + ":" + "L8qq9PZyRg6ieKGEKhZolGC0vJWLw8iEJ88DRdyOg";
+            var twitterCredentials = ApiCredentialSource.TwitterCredentials;
+            string auth = HttpUtility.UrlEncode(twitterCredentials.Key) + ":" + HttpUtility.UrlEncode(twitterCredentials.Secret);
+            byte[] authBytes = Encoding.UTF8.GetBytes(auth);
+            auth = Convert.ToBase64String(authBytes);
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(@"https://api.twitter.com");
+                
+                client.DefaultRequestHeaders.Accept.Clear();
+                // client.DefaultRequestHeaders.Add("Accept", "application/json");
+                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //client.DefaultRequestHeaders.Add("Authorization", "Basic " + auth);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", auth);
+
+                //client.DefaultRequestHeaders.Add("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+                HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, "oauth2/token");
+                //req.Content = new StringContent("{\"name\":\"John Doe\",\"age\":33}", Encoding.UTF8, "application/json");
+                req.Content = new StringContent("grant_type=client_credentials", Encoding.UTF8, "application/x-www-form-urlencoded");
+
+                //var contentList = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("grant_type", "client_credentials") };
+                //var content = new FormUrlEncodedContent(contentList);
+                //HttpResponseMessage response = await client.PostAsync("oauth2/token", content);
+                HttpResponseMessage response = await client.SendAsync(req);
+                if (response.IsSuccessStatusCode)
+                {
+                    dynamic result = await response.Content.ReadAsAsync<dynamic>();
+
+                    string tokenType = result.token_type;
+                    string accessToken = result.access_token;
+
+                    return accessToken;
+
+                    //Product product = await response.Content.ReadAsAsync<Product>();
+                    //Console.WriteLine("{0}\t${1}\t{2}", product.Name, product.Price, product.Category);
+                }
+                else
+                {
+                    //dynamic result = await response.Content.ReadAsAsync<dynamic>();
+                    //string resultJsonStr = Convert.ToString(result);
+                    string result = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine("Errored calling {0}: {1}", req.RequestUri, result);
+                    return null;
+                }
             }
         }
 

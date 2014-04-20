@@ -3,6 +3,9 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using System.Configuration;
+using EisnelShared;
+using System.Diagnostics;
+using AmyDaveWedding.Helpers;
 
 namespace AmyDaveWedding
 {
@@ -25,15 +28,47 @@ namespace AmyDaveWedding
             //    clientId: "",
             //    clientSecret: "");
 
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
+            {
+                var twitterCredentials = ApiCredentialSource.TwitterCredentials;
+                if (twitterCredentials != null)
+                {
+                    //Debug.WriteLine("Twitter AppId encrypted: " + twitterKey.Encrypt());
+                    //Debug.WriteLine("Twitter AppSecret encrypted: " + twitterSecret.Encrypt());
+                    app.UseTwitterAuthentication(
+                       consumerKey: twitterCredentials.Key,
+                       consumerSecret: twitterCredentials.Secret);
+                }
+            }
 
-            app.UseFacebookAuthentication(
-               appId: ConfigurationManager.AppSettings["Facebook.AppId"],
-               appSecret: ConfigurationManager.AppSettings["Facebook.AppSecret"]);
+            {
+                //var facebookId = GetAppSetting("Facebook.AppId", "Facebook.AppIdEncrypted");
+                //var facebookSecret = GetAppSetting("Facebook.AppSecret", "Facebook.AppSecretEncrypted");
+                var facebookCredentials = ApiCredentialSource.FacebookCredentials;
+                if (facebookCredentials != null)
+                {
+                    //Debug.WriteLine("Facebook AppId encrypted: " + facebookCredentials.Key.Encrypt());
+                    //Debug.WriteLine("Facebook AppSecret encrypted: " + facebookCredentials.Secret.Encrypt());
+                    app.UseFacebookAuthentication(
+                       appId: facebookCredentials.Key,
+                       appSecret: facebookCredentials.Secret);
+                }
+            }
 
             app.UseGoogleAuthentication();
         }
+
+        //private string GetAppSetting( string unencryptedName, string encryptedName )
+        //{
+        //    var value = ConfigurationManager.AppSettings[unencryptedName];
+        //    if (string.IsNullOrWhiteSpace(value))
+        //    {
+        //        value = ConfigurationManager.AppSettings[encryptedName];
+        //        if( !string.IsNullOrWhiteSpace(value) )
+        //        {
+        //            value = value.Decrypt();
+        //        }
+        //    }
+        //    return value;
+        //}
     }
 }
