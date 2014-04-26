@@ -1,0 +1,3 @@
+[submodule "EisnelShared02"]
+	path = EisnelShared
+	url = https://github.com/Eisnel/EisnelShared.git

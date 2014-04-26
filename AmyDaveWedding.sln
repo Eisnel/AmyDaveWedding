@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmyDaveWedding", "AmyDaveWe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmyDaveWedding.Tests", "AmyDaveWedding.Tests\AmyDaveWedding.Tests.csproj", "{DBF9946C-B202-4AC3-8929-6555B0EF5706}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EisnelShared", "..\EisnelShared\EisnelShared\EisnelShared.csproj", "{431E91F4-C66C-4F0E-875F-6FFDB2999F9E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EisnelShared", "EisnelShared\EisnelShared.csproj", "{431E91F4-C66C-4F0E-875F-6FFDB2999F9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
