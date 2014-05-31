@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -415,9 +416,16 @@ namespace AmyDaveWedding.Controllers
 
                 var zipCode = "55555";
                 var lastName = "Smith";
+
                 // var invitees = WeddingContext.Invitees.Where(i => i.ZipCode == zipCode).Where(i => i.Name.Contains(lastName));
-                var invitees = from i in WeddingContext.Invitees where i.ZipCode == zipCode && i.Name.Contains(lastName) select i;
-                // var sql = ((System.Data.Objects.ObjectQuery)invitees).ToTraceString();
+                var query = from i in WeddingContext.Invitees
+                            where i.LockedFromUserAssignment == false
+                            && i.ZipCode == zipCode
+                            && i.Name.Contains(lastName)
+                            select i;
+                // var sql = ((System.Data.Objects.ObjectQuery)query).ToTraceString();
+                var invitees = await query.ToListAsync();
+
                 if (invitees.Count() == 1)
                 {
                     // Get the information about the user from the external login provider

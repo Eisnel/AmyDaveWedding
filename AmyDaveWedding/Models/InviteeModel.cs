@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -14,15 +15,20 @@ namespace AmyDaveWedding.Models
             AdditionalAdultCount = 0;
             ChildCount = 0;
             InterestedInChildCare = false;
+            LockedFromUserAssignment = false;
         }
 
+        public int Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public string ZipCode { get; set; }
 
         public string? Group { get; set; }
 
-        public Boolean SignificantOtherKnown { get; set; }
+        public bool SignificantOtherKnown { get; set; }
 
         public bool Attending { get; set; }
 
@@ -30,6 +36,8 @@ namespace AmyDaveWedding.Models
 
         public int ChildCount { get; set; }
 
-        public Boolean InterestedInChildCare { get; set; }
+        public bool InterestedInChildCare { get; set; }
+
+        public bool LockedFromUserAssignment { get; set; }
     }
 }
