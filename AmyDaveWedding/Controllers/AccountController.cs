@@ -24,6 +24,8 @@ namespace AmyDaveWedding.Controllers
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
+            this.WeddingContext = new WeddingContext();
+            this.WeddingContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
 
         public AccountController(UserManager<ApplicationUser> userManager)
@@ -32,6 +34,8 @@ namespace AmyDaveWedding.Controllers
         }
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
+
+        private WeddingContext WeddingContext { get; private set; }
 
         //
         // GET: /Account/Login
@@ -400,24 +404,56 @@ namespace AmyDaveWedding.Controllers
 
             if (ModelState.IsValid)
             {
-                // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
+                // TODO: Verify that this user is actually invited.
+                // Ask for a last name and zip code.
+                // Compare to known Invitees in our database.
+                // If no match, set an error message and proceed to
+                // the end of this method to redisplay the previous form.
+                // If a match is found, attach that Invitee
+                // to the ApplicationUser created below.
+                // ...
+
+                var zipCode = "55555";
+                var lastName = "Smith";
+                // var invitees = WeddingContext.Invitees.Where(i => i.ZipCode == zipCode).Where(i => i.Name.Contains(lastName));
+                var invitees = from i in WeddingContext.Invitees where i.ZipCode == zipCode && i.Name.Contains(lastName) select i;
+                // var sql = ((System.Data.Objects.ObjectQuery)invitees).ToTraceString();
+                if (invitees.Count() == 1)
                 {
-                    return View("ExternalLoginFailure");
-                }
-                var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
-                var result = await UserManager.CreateAsync(user);
-                if (result.Succeeded)
-                {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    // Get the information about the user from the external login provider
+                    var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                    if (info == null)
+                    {
+                        return View("ExternalLoginFailure");
+                    }
+                    Invitee invitee = invitees.First();
+                    var user = new ApplicationUser() { Invitee = invitee, UserName = model.UserName, Email = model.Email };
+                    var result = await UserManager.CreateAsync(user);
                     if (result.Succeeded)
                     {
-                        await SignInAsync(user, isPersistent: false);
-                        return RedirectToLocal(returnUrl);
+                        result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                        if (result.Succeeded)
+                        {
+                            await SignInAsync(user, isPersistent: false);
+                            return RedirectToLocal(returnUrl);
+                        }
                     }
+                    AddErrors(result);
                 }
-                AddErrors(result);
+                else if( invitees.Count() > 1 )
+                {
+                    // Multiple Invitees matched this criteria.
+                    // Redisplay the form and request that they pick an Invitee.
+                    ViewBag.MatchingInvitees = invitees;
+                }
+                else
+                {
+                    // Then no matching Invitees were found.
+                    // TODO: Set an error then redisplay the form.
+
+                    // ModelState.AddModelError("", "error description");
+                    ViewBag.NoInviteeFound = true;
+                }
             }
 
             ViewBag.ReturnUrl = returnUrl;

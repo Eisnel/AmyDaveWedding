@@ -19,11 +19,11 @@
 
             <div class="btn" ng-click="test()">Toast</div>
 
-            <ul>
-                <li ng-repeat="song in songs">
+            <div>
+                <div ng-repeat="song in songs">
                     {{ song.title }} - {{ song.artist }}
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
 
         @Scripts.Render("~/bundles/jquery")

@@ -12,21 +12,23 @@ namespace AmyDaveWedding.Models
             Attending = false;
         }
 
+        public Invitee Invitee { get; set; }
+
         public string Email { get; set; }
 
         public string Name { get; set; }
 
+        public DateTime CreationDate { get; set; }
+
         //public string Code { get; set; }
+
+        public DateTime? RsvpDate { get; set; }
 
         public bool Attending { get; set; }
 
         //public int? AdditionalAdultCount { get; set; }
 
         //public int? ChildCount { get; set; }
-
-        public DateTime CreationDate { get; set; }
-
-        public DateTime? RsvpDate { get; set; }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>

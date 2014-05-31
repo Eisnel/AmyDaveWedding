@@ -15,6 +15,61 @@
         $routeProvider.otherwise({ redirectTo: '/view1' });
     }])
 
+    .factory('Song', ['$resource', function ($resource) {
+
+        //var apiKey = "testKey";
+
+        var Song = $resource("http://tinysong.com/s/:searchTerm?format=json&limit=7&key=:key",
+            {
+                searchTerm: "@searchTerm",
+                key: '@key'
+            },
+            {
+                search: {
+                    method: 'GET',
+                    params: { searchTerm: '@searchTerm', key: '@key' },
+                    isArray: true
+                }
+            }
+        );
+
+        return Song;
+    }])
+
+    .controller('SongSearchCtrl', ['$scope', 'Song', 'dpNotify', function ($scope, Song, dpNotify) {
+
+        $scope.variable = 'World';
+
+        $scope.searchTerm;
+
+        $scope.search = function () {
+
+            if (!$.trim($scope.searchTerm).length) {
+                dpNotify.info("Blank search: " + $scope.searchTerm, "Search clicked");
+                // $scope.searchResults = [];
+                $scope.searchResults = [
+                { 'SongName': 'Thriller', 'ArtistName': 'Michael Jackson' }
+                ];
+                $scope.searchResultsJson = angular.toJson($scope.searchResults, true);
+            }
+            else {
+                dpNotify.info("Starting search: " + $scope.searchTerm, "Search clicked");
+
+                $scope.searchInProgress = true; // show the spinner.
+                $scope.searchResults = Song.search(
+                {
+                    searchTerm: window.encodeURIComponent($scope.searchTerm),
+                    key: $scope.tinySongApiKey
+                },
+                function (result) {
+                    $scope.searchInProgress = false; // hide the spinner.
+                }
+                );
+            }
+        }
+
+    }])
+
     .controller('SongController', ['$scope', 'dpNotify', function ($scope, dpNotify) {
   
         $scope.name = 'World';
