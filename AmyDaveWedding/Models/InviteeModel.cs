@@ -26,7 +26,7 @@ namespace AmyDaveWedding.Models
         [Required]
         public string ZipCode { get; set; }
 
-        public string? Group { get; set; }
+        public string Group { get; set; }
 
         public bool SignificantOtherKnown { get; set; }
 

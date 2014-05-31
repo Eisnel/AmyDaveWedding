@@ -31,26 +31,32 @@ namespace AmyDaveWedding.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
         [Display(Name = "Email")]
         public string Email { get; set; }
 
-        [Display(Name = "Full name")]
+        [Required]
+        [StringLength(255, MinimumLength = 5, ErrorMessage = "This is too short. Please enter your first and last name (to verify that you're on our list)")]
+        [Display(Name = "Full Name")]
         public string Name { get; set; }
 
-        [Display(Name = "Code on invite")]
-        public string Code { get; set; }
+        //[Display(Name = "Code on invite")]
+        //public string Code { get; set; }
 
-        [Display(Name = "Attending")]
-        public bool Attending { get; set; }
+        //[Display(Name = "Attending")]
+        //public bool Attending { get; set; }
 
-        [Display(Name = "Plus one")]
-        public bool PlusOne { get; set; }
+        //[Display(Name = "Plus one")]
+        //public bool PlusOne { get; set; }
 
-        [Display(Name = "Number of children attending")]
-        public int ChildCount { get; set; }
+        //[Display(Name = "Number of children attending")]
+        //public int ChildCount { get; set; }
+
+        [Required]
+        [Display(Name = "Zip/Postal Code")]
+        public string ZipCode { get; set; }
     }
 
     public class ManageUserViewModel

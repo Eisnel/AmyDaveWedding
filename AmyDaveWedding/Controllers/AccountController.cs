@@ -36,7 +36,7 @@ namespace AmyDaveWedding.Controllers
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
 
-        private WeddingContext WeddingContext { get; private set; }
+        private WeddingContext WeddingContext { get; set; }
 
         //
         // GET: /Account/Login
@@ -405,7 +405,13 @@ namespace AmyDaveWedding.Controllers
 
             if (ModelState.IsValid)
             {
-                // TODO: Verify that this user is actually invited.
+                // Verify that this user is actually invited.
+                // We asked for their full name and zip code.
+                // Verify that there's an Invitee with that zip code
+                // who either has:
+                // 1. The correct last name.
+                // 2. The correct full name.
+                // Try to strip off their last name and check to see 
                 // Ask for a last name and zip code.
                 // Compare to known Invitees in our database.
                 // If no match, set an error message and proceed to
@@ -414,15 +420,28 @@ namespace AmyDaveWedding.Controllers
                 // to the ApplicationUser created below.
                 // ...
 
-                var zipCode = "55555";
-                var lastName = "Smith";
+                var fullName = model.Name.Trim().ToLower();
+                var lastName = fullName.Split().Last().Trim();
+                if( lastName.Length < 3 )
+                {
+                    lastName = null;
+                }
+                var zipCode = model.ZipCode.Trim();
 
-                // var invitees = WeddingContext.Invitees.Where(i => i.ZipCode == zipCode).Where(i => i.Name.Contains(lastName));
-                var query = from i in WeddingContext.Invitees
-                            where i.LockedFromUserAssignment == false
-                            && i.ZipCode == zipCode
-                            && i.Name.Contains(lastName)
-                            select i;
+                var query = WeddingContext.Invitees.Where(i => i.LockedFromUserAssignment == false && i.ZipCode == zipCode);
+                if (!string.IsNullOrWhiteSpace(lastName))
+                {
+                    query = query.Where(i => i.Name.Contains(lastName));
+                }
+                else
+                {
+                    query = query.Where(i => i.Name.Contains(fullName) || fullName.Contains(i.Name));
+                }
+                //var query = from i in WeddingContext.Invitees
+                //            where i.LockedFromUserAssignment == false
+                //            && i.ZipCode == zipCode
+                //            && i.Name.Contains(lastName)
+                //            select i;
                 // var sql = ((System.Data.Objects.ObjectQuery)query).ToTraceString();
                 var invitees = await query.ToListAsync();
 
@@ -459,7 +478,8 @@ namespace AmyDaveWedding.Controllers
                     // Then no matching Invitees were found.
                     // TODO: Set an error then redisplay the form.
 
-                    // ModelState.AddModelError("", "error description");
+                    ModelState.AddModelError("Name", "Cannot find an invitee with this name/zip combo.");
+                    ModelState.AddModelError("ZipCode", "Cannot find an invitee with this name/zip combo.");
                     ViewBag.NoInviteeFound = true;
                 }
             }
