@@ -1,49 +1,92 @@
 ﻿@model AmyDaveWedding.Models.ExternalLoginConfirmationViewModel
 @{
+    Layout = "~/Views/Account/_AccountLayout.cshtml";
     ViewBag.Title = "Register";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>Associate your @ViewBag.LoginProvider account.</h3>
 
-@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+<h2>Register</h2>
+<p class="text-info">
+    You've successfully authenticated using <strong>@ViewBag.LoginProvider</strong>.
+</p>
+<hr />
+
+@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl, LoginProvider = ViewBag.LoginProvider }, FormMethod.Post, new { id = "ext-conf-form", @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(m => m.UserName)
+    @Html.HiddenFor(m => m.InviteeId)
 
-    <h4>Association Form</h4>
-    <hr />
     @Html.ValidationSummary(true)
-    <p class="text-info">
-        You've successfully authenticated with <strong>@ViewBag.LoginProvider</strong>.
-            Please enter a user name for this site below and click the Register button to finish
-            logging in.
-    </p>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Name)
+
+    if (ViewBag.MatchingInvitees != null && ViewBag.MatchingInvitees.Count > 0)
+    {
+        @Html.HiddenFor(m => m.Name)
+        @Html.HiddenFor(m => m.Email)
+        @Html.HiddenFor(m => m.ZipCode)
+        <div class="select-invitee">
+            <div class="form-group who-are-you">
+                <div class="col-xs-12">
+                    We found multiple matches. Which one are you?
+                </div>
+            </div>
+            <div class="form-group invitee-list">
+                <div class="col-xs-11 col-sm-6 col-md-5 col-lg-4">
+                    <ul class="list-group">
+                        @foreach (var invitee in ViewBag.MatchingInvitees)
+                        {
+                            <li class="list-group-item">
+                                <span>@invitee.Name</span>
+                                <a class="btn btn-primary btn-sm pull-right" data-invitee-id="@invitee.Id">
+                                    <i class="fa fa-check"></i> This is me
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+            @*<div class="form-group">
+                <div class="col-xs-12">
+                    <input type="submit" class="btn btn-success" value="Register" />
+                </div>
+            </div>*@
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Email)
+    }
+    else
+    {
+        <div class="user-info">
+            <p>
+                Please provide some additional info to verify that you're on our wedding list.
+                Use the zip code that we sent your invitation to.
+            </p>
+
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.ZipCode, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ZipCode)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" class="btn btn-success" value="Register" />
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.ZipCode, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(m => m.ZipCode, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.ZipCode)
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
-        </div>
-    </div>
+    }
 }
 
 @section Scripts {

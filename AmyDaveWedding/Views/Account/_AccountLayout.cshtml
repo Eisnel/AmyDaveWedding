@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
+    @RenderSection("css", required: false)
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
 <body>
 
-    <div class="jumbotron">
+    <div class="masthead hidden-xs">
         <div class="container">
-            Jumbotron
+            <h1>Amy &amp; Dave's Wedding</h1>
         </div>
     </div>
 
-    @Html.Partial("~/Views/Shared/_Navbar.cshtml");
+    @Html.Partial("~/Views/Shared/_Navbar.cshtml")
 
     @*<div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
@@ -40,10 +41,7 @@
     </div>*@
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+        @Html.Partial("~/Views/Shared/_Footer.cshtml")
     </div>
 
     @*@Scripts.Render("~/bundles/jquery")

@@ -1,6 +1,13 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿/* Oleo Script */
+/* Oleo Script bold */
+/*@import url(http://fonts.googleapis.com/css?family=Oleo+Script:400,700);*/
+@import url(http://fonts.googleapis.com/css?family=Oleo+Script);
+/*@import url(http://fonts.googleapis.com/css?family=Oleo+Script:700);*/
+
+
+body {
+    /*padding-top: 50px;
+    padding-bottom: 20px;*/
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -40,3 +47,111 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+/* Navbar */
+
+.navbar {
+    -webkit-border-radius: 9px;
+    -webkit-border-top-left-radius: 0px;
+    -webkit-border-top-right-radius: 0px;
+    -moz-border-radius: 9px;
+    -moz-border-radius-topleft: 0px;
+    -moz-border-radius-topright: 0px;
+    border-radius: 0 0 9px 9px;
+}
+.navbar-affixed {
+    margin-bottom: 0;
+}
+.navbar-wrapper {
+    margin-bottom: 10px;
+}
+.navbar-affixed .affix-top {
+
+}
+.navbar-affixed.affix {
+    top: 0;
+    width: 100%;
+}
+
+/* Jumbotron */
+
+.masthead {
+    background: url('/Images/Coral_Charm_Peonies.jpg') no-repeat 30% 57%;
+}
+
+.masthead .container {
+    padding: 40px 0;
+}
+.masthead h1 {
+    margin: 0;
+    font-family: 'Oleo Script', cursive;
+    color: white;
+    /*font-weight: 400;*/
+    font-size: 60px;
+    text-align: center;
+    text-shadow: -1px -1px 0 #000, 
+                  1px -1px 0 #000,
+                 -1px 1px 0 #000,
+                  2px 2px 0 #000;
+}
+
+@media (max-width: 767px) {
+}
+
+/* Login */
+
+@media (max-width: 767px) {
+    #socialLoginList {
+        margin-bottom: 30px;
+    }
+
+    #loginForm {
+        margin-top: 30px;
+    }
+
+    #socialLoginList hr,
+    #loginForm hr {
+        margin-bottom: 10px;
+    }
+}
+
+#loginForm .login-button {
+    float: left;
+}
+
+#loginForm .remember-me {
+    float: left;
+    margin-left: 20px;
+}
+
+@media (max-width: 767px) {
+    #socialLoginList .btn-block {
+        width: 280px;
+    }
+}
+#socialLoginList .btn-block + .btn-block {
+    margin-top: 12px;
+}
+
+/* External Login Confirmation */
+
+#ext-conf-form p {
+    margin-bottom: 20px;
+}
+
+#ext-conf-form .select-invitee .invitee-list ul {
+    margin-bottom: 5px;
+}
+
+#ext-conf-form .select-invitee .who-are-you div {
+    font-weight: bold;
+}
+
+#ext-conf-form .select-invitee .invitee-list .list-group-item > span {
+    line-height: 2.2;
+}
+
+#ext-conf-form .select-invitee .invitee-list .btn i {
+    margin-right: 3px;
+}
+

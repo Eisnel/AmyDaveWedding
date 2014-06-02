@@ -57,6 +57,8 @@ namespace AmyDaveWedding.Models
         [Required]
         [Display(Name = "Zip/Postal Code")]
         public string ZipCode { get; set; }
+
+        public int? InviteeId { get; set; }
     }
 
     public class ManageUserViewModel
@@ -81,7 +83,7 @@ namespace AmyDaveWedding.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
         [Required]
@@ -96,7 +98,7 @@ namespace AmyDaveWedding.Models
     public class RegisterViewModel
     {
         [Required]
-        [Display(Name = "User name")]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
         [Required]

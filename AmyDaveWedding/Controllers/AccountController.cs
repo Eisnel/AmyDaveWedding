@@ -396,7 +396,7 @@ namespace AmyDaveWedding.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
+        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl, String loginProvider)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -445,6 +445,18 @@ namespace AmyDaveWedding.Controllers
                 // var sql = ((System.Data.Objects.ObjectQuery)query).ToTraceString();
                 var invitees = await query.ToListAsync();
 
+                if (invitees.Count() > 1 && model.InviteeId != null && model.InviteeId > 0)
+                {
+                    // Even if an Invitee Id was passed, we still perform the query above.
+                    // That prevents somebody from simply guessing in an Invitee Id.
+                    // Now we search the results for an Invitee with the passed Id:
+                    var matchesId = invitees.Where(i => i.Id == model.InviteeId).ToList();
+                    if (matchesId.Any())
+                    {
+                        invitees = matchesId;
+                    }
+                }
+
                 if (invitees.Count() == 1)
                 {
                     // Get the information about the user from the external login provider
@@ -485,6 +497,7 @@ namespace AmyDaveWedding.Controllers
             }
 
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.LoginProvider = loginProvider;
             return View(model);
         }
 
