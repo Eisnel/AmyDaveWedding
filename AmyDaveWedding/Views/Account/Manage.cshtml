@@ -1,14 +1,28 @@
 ﻿@using AmyDaveWedding.Models;
 @using Microsoft.AspNet.Identity;
 @{
+    Layout = "~/Views/Account/_AccountLayout.cshtml";
     ViewBag.Title = "Manage Account";
+}
+
+@section css {
+    <link href="/Content/bootstrap-social.css" rel="stylesheet" />
 }
 
 <h2>@ViewBag.Title.</h2>
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-5">
+
+        <section id="externalLogins">
+            @Html.Action("RemoveAccountList")
+            @Html.Partial("_ExternalLoginsListPartial", new { UserLoginProviderTypes = ViewBag.UserLoginProviderTypes, Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+
+    </div>
+    <div class="col-sm-offset-1 col-sm-6">
+
         @if (ViewBag.HasLocalPassword)
         {
             @Html.Partial("_ChangePasswordPartial")
@@ -18,10 +32,6 @@
             @Html.Partial("_SetPasswordPartial")
         }
 
-        <section id="externalLogins">
-            @Html.Action("RemoveAccountList")
-            @Html.Partial("_ExternalLoginsListPartial", new { Action = "LinkLogin", ReturnUrl = ViewBag.ReturnUrl })
-        </section>
     </div>
 </div>
 @section Scripts {

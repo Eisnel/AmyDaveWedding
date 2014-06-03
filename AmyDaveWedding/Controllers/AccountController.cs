@@ -137,6 +137,8 @@ namespace AmyDaveWedding.Controllers
                 : "";
             ViewBag.HasLocalPassword = HasPassword();
             ViewBag.ReturnUrl = Url.Action("Manage");
+            ViewBag.Username = User.Identity.GetUserName();
+            ViewBag.UserLoginProviderTypes = GetUserLoginProviderTypes();
             return View();
         }
 
@@ -188,7 +190,14 @@ namespace AmyDaveWedding.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            ViewBag.UserLoginProviderTypes = GetUserLoginProviderTypes();
             return View(model);
+        }
+
+        private IEnumerable<string> GetUserLoginProviderTypes()
+        {
+            IList<UserLoginInfo> linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
+            return linkedAccounts.Select(l => l.LoginProvider).ToList();
         }
 
         //

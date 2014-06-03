@@ -18,6 +18,12 @@
     }
     else
     {
+        IEnumerable<string> existingLoginProviders = Model.UserLoginProviderTypes;
+        if (existingLoginProviders != null)
+        {
+            // Filter out Login Providers that this user is already assigned to:
+            loginProviders = loginProviders.Where(p => !existingLoginProviders.Contains(p.AuthenticationType));
+        }
         loginProviders = loginProviders.OrderBy(p => p.AuthenticationType != "Facebook").ThenBy(p => p.AuthenticationType != "Twitter").ThenBy(p => p.AuthenticationType).ToList();
         string action = Model.Action;
         string returnUrl = Model.ReturnUrl;
