@@ -182,7 +182,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\InviteeModel.cs" />
+    <Compile Include="Models\InviteeModels.cs" />
     <Compile Include="Models\ThirdPartyIdentityModels.cs" />
     <Compile Include="Models\WeddingContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -274,10 +274,12 @@
       </SubType>
     </Content>
     <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Account\Rsvp.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\services\" />
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Rsvp\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

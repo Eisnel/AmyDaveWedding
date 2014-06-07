@@ -155,3 +155,47 @@ input[type="checkbox"].input-validation-error {
     margin-right: 3px;
 }
 
+@media(max-width:767px) {
+    .manage-account > div:first-child {
+        margin-bottom: 50px;
+    }
+}
+
+.rsvp-form .btn-group .btn {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 17.5px;
+}
+.rsvp-form .btn-group .btn-success {
+    background-color: #7BC27B;
+    border-color: #54B154;
+}
+.rsvp-form .btn-group .btn-danger {
+    background-color: #D6706C;
+    border-color: #CA5C58;
+}
+.rsvp-form .btn-group .btn-success:hover,
+.rsvp-form .btn-group .btn-success:focus,
+.rsvp-form .btn-group .btn-success:active,
+.rsvp-form .btn-group .btn-success.active {
+    background-color: #5cb85c;
+    border-color: #398439;
+}
+.rsvp-form .btn-group .btn-danger:hover,
+.rsvp-form .btn-group .btn-danger:focus,
+.rsvp-form .btn-group .btn-danger:active,
+.rsvp-form .btn-group .btn-danger.active {
+    background-color: #d2322d;
+    border-color: #d43f3a;
+}
+
+.rsvp-form .form-group label {
+    font-size: 16px;
+}
+
+@media(max-width:767px) {
+    .rsvp-form .popover-button {
+        margin-bottom: 10px;
+    }
+}
+
+

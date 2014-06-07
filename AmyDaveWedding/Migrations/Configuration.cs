@@ -35,6 +35,7 @@ namespace AmyDaveWedding.Migrations
                 var roleManager = new RoleManager<IdentityRole>(roleStore);
                 var userStore = new UserStore<ApplicationUser>(context);
                 var userManager = new UserManager<ApplicationUser>(userStore);
+
                 var user = new ApplicationUser { UserName = "davep" };
 
                 userManager.Create(user, "test123");

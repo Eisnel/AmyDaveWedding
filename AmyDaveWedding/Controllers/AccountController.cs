@@ -23,20 +23,117 @@ namespace AmyDaveWedding.Controllers
     public class AccountController : Controller
     {
         public AccountController()
-            : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
-            this.WeddingContext = new WeddingContext();
-            this.WeddingContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+            ApplicationContext = new ApplicationDbContext();
+            UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(ApplicationContext));
+
+            WeddingContext = new WeddingContext();
+            WeddingContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
 
-        public AccountController(UserManager<ApplicationUser> userManager)
-        {
-            UserManager = userManager;
-        }
+        //public AccountController(UserManager<ApplicationUser> userManager)
+        //{
+        //    UserManager = userManager;
+        //}
 
-        public UserManager<ApplicationUser> UserManager { get; private set; }
+        private ApplicationDbContext ApplicationContext { get; set; }
+
+        private UserManager<ApplicationUser> UserManager { get; set; }
 
         private WeddingContext WeddingContext { get; set; }
+
+        //
+        // GET: /Account/Rsvp
+        public async Task<ActionResult> Rsvp()
+        {
+            RsvpModel model;
+
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            var invitee = user.Invitee;
+            if( invitee != null )
+            {
+                var groupedInvitees = await GetGroupedInvitees(invitee);
+                ViewBag.GroupedInvitees = groupedInvitees;
+                ViewBag.PlusOneKnown = groupedInvitees.Any( i => i.IsKnown );
+
+                model = new RsvpModel() {
+                    Attending = invitee.Attending,
+                    ChildCount = invitee.ChildCount,
+                    InterestedInChildCare = invitee.InterestedInChildCare,
+                    RsvpDate = user.RsvpDate,
+                    Note = invitee.Note
+                };
+
+                // Only set model.PlusOneAttending to a non-null value if there's
+                // at least one grouped Invitee with a non-null Attending value:
+                if( groupedInvitees.Any(i => i.Attending == true) )
+                {
+                    model.PlusOneAttending = true;
+                }
+                else if( groupedInvitees.Any(i => i.Attending == false) )
+                {
+                    model.PlusOneAttending = false;
+                }
+            }
+            else
+            {
+                model = new RsvpModel();
+                ViewBag.NoInvitee = true;
+            }
+
+            return View(model);
+        }
+
+        //
+        // POST: /Account/Rsvp
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Rsvp(RsvpModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = UserManager.FindById(User.Identity.GetUserId());
+                var invitee = user.Invitee;
+                if( invitee != null )
+                {
+                    invitee.Attending = model.Attending;
+                    user.Attending = model.Attending;
+                    user.RsvpDate = DateTime.Now;
+
+                    invitee.ChildCount = model.ChildCount;
+                    invitee.InterestedInChildCare = invitee.InterestedInChildCare;
+
+                    if (model.PlusOneAttending != null)
+                    {
+                        // Update groups Invitees based on model.PlusOneAttending:
+                        var groupedInvitees = await GetGroupedInvitees(invitee);
+                        foreach (var i in groupedInvitees)
+                        {
+                            i.Attending = model.PlusOneAttending;
+                        }
+                    }
+
+                    await ApplicationContext.SaveChangesAsync();
+                    await WeddingContext.SaveChangesAsync();
+
+                    ViewBag.Attending = invitee.Attending;
+                    return View("RsvpConfirm");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+        private async Task<IEnumerable<Invitee>> GetGroupedInvitees(Invitee invitee)
+        {
+            if (string.IsNullOrWhiteSpace(invitee.Group))
+            {
+                return Enumerable.Empty<Invitee>();
+            }
+            var query = WeddingContext.Invitees.Where(i => i.Group == invitee.Group && i != invitee);
+            return await query.ToListAsync();
+        }
 
         //
         // GET: /Account/Login

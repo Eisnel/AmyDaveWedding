@@ -1,0 +1,167 @@
+﻿@model AmyDaveWedding.Models.RsvpModel
+
+@{
+    Layout = "~/Views/Account/_AccountLayout.cshtml";
+    ViewBag.Title = "Rsvp";
+}
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("[data-toggle='tooltip']").tooltip();
+            $("[data-toggle='popover']").popover();
+        });
+
+        // http://stackoverflow.com/questions/11703093/how-to-dismiss-a-twitter-bootstrap-popover-by-clicking-outside
+        $('body').on('click', function (e) {
+            if ($(e.target).data('toggle') !== 'popover'
+                && $(e.target).parents('.popover.in').length === 0) {
+                // did not click a popover toggle or popover
+                $('[data-toggle="popover"]').popover('hide');
+            }
+        });
+    </script>
+}
+
+<div class="rsvp">
+
+    <h2>Rsvp</h2>
+
+    @using (Html.BeginForm("Rsvp", "Account", FormMethod.Post, new { @class = "rsvp-form form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="">
+            <h4>RsvpModel</h4>
+            <hr />
+            @Html.ValidationSummary(true)
+            <div class="form-group">
+                <div class="col-sm-5 col-md-5">
+                    <label class="Xcontrol-label" for="Attending">Are you attending our wedding?</label>
+                    <p class="">
+                        Note: You can return at any time and change this.
+                        If you're unsure, please give us your best guess,
+                        and modify this when you know for sure.
+                    </p>
+                </div>
+                <div class="col-sm-7 col-md-7">
+                    <div class="btn-group hidden-sm" data-toggle="buttons">
+                        <label class="btn btn-lg btn-success">
+                            <input type="radio" name="Attending" @(Model.Attending == true ? "checked" : "")>Yes, I'm Attending
+                        </label>
+                        <label class="btn btn-lg btn-danger">
+                            <input type="radio" name="Attending" @(Model.Attending == false ? "checked" : "")>Regretfully Not Attending
+                        </label>
+                    </div>
+                    <div class="btn-group visible-sm" data-toggle="buttons">
+                        <label class="btn btn-lg btn-success">
+                            <input type="radio" name="Attending" @(Model.Attending == true ? "checked" : "")>Yes
+                        </label>
+                        <label class="btn btn-lg btn-danger">
+                            <input type="radio" name="Attending" @(Model.Attending == false ? "checked" : "")>No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="form-group">
+                @if (ViewBag.PlusOneKnown == true)
+                {
+                    <div class="col-sm-5 col-md-5">
+                        <label class="Xcontrol-label" for="PlusOneAttending">Is your significant other attending?</label>
+                        <p class="">
+                            Your S.O. can also login to the site and RSVP.
+                            It works either way.
+                        </p>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-5 col-md-5">
+                        <label class="Xcontrol-label" for="PlusOneAttending">Are you bringing a date?</label>
+                        <p class="">
+                            If you have a significant other or are dating someone, you're welcome to bring them.
+                            If your status changes before the wedding, you can come back and update this.
+                        </p>
+                        <button type="button" class="popover-button btn btn-default" data-container="body"
+                                data-toggle="popover" data-placement="bottom"
+                                Xtitle Xdata-original-title="Should I find a date?"
+                                data-content="If you're single on the day of our wedding, don't sweat it. We're not having a sit-down dinner so you won't endure sitting alone at a table full of strangers. We request that you not recruit a last-minute date just because you're worried about being dateless. It will probably be awkward, and you'll be expected to babysit whoever you bring.">
+                            What if I'm not dating anybody?
+                        </button>
+                    </div>
+                }
+                <div class="col-sm-7 col-md-7">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-lg btn-success">
+                            <input type="radio" name="PlusOneAttending" id="PlusOneAttending_Yes" @(Model.PlusOneAttending == true ? "checked" : "")>Yes
+                        </label>
+                        <label class="btn btn-lg btn-danger">
+                            <input type="radio" name="PlusOneAttending" id="PlusOneAttending_No" @(Model.PlusOneAttending == false ? "checked" : "")>No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <div class="form-group">
+                <div class="col-sm-5 col-md-5">
+                    <label class="Xcontrol-label" for="ChildCount">Are you bringing children?</label>
+                    <p class="">
+                        
+                    </p>
+                </div>
+                <div class="col-sm-7 col-md-7">
+                    <div class="btn-group" data-toggle="buttons">
+                        @foreach( int i in Enumerable.Range(0,6) )
+                        {
+                            <label class="btn btn-lg btn-default">
+                                <input type="radio" name="ChildCount" id="ChildCount_@i" value="@i" @(Model.ChildCount == i ? "checked" : "")>@i
+                            </label>
+                        }
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ChildCount)
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="col-sm-5 col-md-5">
+                    <label class="Xcontrol-label" for="InterestedInChildCare">Are you interested in child care?</label>
+                    <p class="">
+                        Although we can't provide child care directly,
+                        we can help by putting you in touch with other out-of-town parents who are interested in child care.
+                    </p>
+                </div>
+                <div class="col-sm-7 col-md-7">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-lg btn-success">
+                            <input type="radio" name="InterestedInChildCare" id="InterestedInChildCare_Yes" @(Model.InterestedInChildCare == true ? "checked" : "")>Yes
+                        </label>
+                        <label class="btn btn-lg btn-danger">
+                            <input type="radio" name="InterestedInChildCare" id="InterestedInChildCare_No" @(Model.InterestedInChildCare == false ? "checked" : "")>No
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="col-sm-5 col-md-5">
+                    <label class="Xcontrol-label" for="Note">Note for the bride &amp; groom</label>
+                    <p class="">
+                        Although we can't provide child care directly,
+                        we can help by putting you in touch with other out-of-town parents who are interested in child care.
+                    </p>
+                </div>
+                <div class="col-sm-7 col-md-7">
+                    @Html.EditorFor(model => model.Note)
+                    @Html.ValidationMessageFor(model => model.Note)
+                </div>
+            </div>
+            <hr />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+</div>

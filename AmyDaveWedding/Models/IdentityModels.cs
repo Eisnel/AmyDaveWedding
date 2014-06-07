@@ -24,7 +24,7 @@ namespace AmyDaveWedding.Models
 
         public DateTime? RsvpDate { get; set; }
 
-        public bool Attending { get; set; }
+        public bool? Attending { get; set; }
 
         //public int? AdditionalAdultCount { get; set; }
 

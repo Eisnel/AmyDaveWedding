@@ -6,7 +6,7 @@
     It doesn't let us post to your wall or anything like that.
     We simply ask your social network to verify your identity.
 </p>
-<hr />
+<hr class="hidden-xs"/>
 @{
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
     if (loginProviders.Count() == 0)
@@ -25,38 +25,45 @@
             loginProviders = loginProviders.Where(p => !existingLoginProviders.Contains(p.AuthenticationType));
         }
         loginProviders = loginProviders.OrderBy(p => p.AuthenticationType != "Facebook").ThenBy(p => p.AuthenticationType != "Twitter").ThenBy(p => p.AuthenticationType).ToList();
-        string action = Model.Action;
-        string returnUrl = Model.ReturnUrl;
-        using (Html.BeginForm(action, "Account", new { ReturnUrl = returnUrl }))
+        if( loginProviders.Count() > 0 )
         {
-            @Html.AntiForgeryToken()
-            <div id="socialLoginList">
-                <p>
-                @foreach (AuthenticationDescription p in loginProviders)
-                {
-                    string classSuffix = null;
-                    switch(p.AuthenticationType)
+            string action = Model.Action;
+            string returnUrl = Model.ReturnUrl;
+            using (Html.BeginForm(action, "Account", new { ReturnUrl = returnUrl }))
+            {
+                @Html.AntiForgeryToken()
+                <div id="socialLoginList">
+                    <p>
+                    @foreach (AuthenticationDescription p in loginProviders)
                     {
-                        case "Facebook":
-                            classSuffix = "facebook";
-                            break;
-                        case "Twitter":
-                            classSuffix = "twitter";
-                            break;
-                        case "Google":
-                            classSuffix = "google-plus";
-                            break;
-                    }
-                    <button type="submit" class="btn btn-block btn-social btn-@classSuffix" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">
-                        @if (classSuffix != null)
+                        string classSuffix = null;
+                        switch(p.AuthenticationType)
                         {
-                            <i class="fa fa-@classSuffix"></i>
+                            case "Facebook":
+                                classSuffix = "facebook";
+                                break;
+                            case "Twitter":
+                                classSuffix = "twitter";
+                                break;
+                            case "Google":
+                                classSuffix = "google-plus";
+                                break;
                         }
-                        @p.AuthenticationType
-                    </button>
-                }
-                </p>
-            </div>
+                        <button type="submit" class="btn btn-block btn-social btn-@classSuffix" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">
+                            @if (classSuffix != null)
+                            {
+                                <i class="fa fa-@classSuffix"></i>
+                            }
+                            @p.AuthenticationType
+                        </button>
+                    }
+                    </p>
+                </div>
+            }
+        }
+        else
+        {
+            <div>You've already registered with every social network that this site supports.</div>
         }
     }
 }
