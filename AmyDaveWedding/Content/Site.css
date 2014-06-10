@@ -166,8 +166,8 @@ input[type="checkbox"].input-validation-error {
     font-size: 17.5px;
 }
 .rsvp-form .btn-group .btn-success {
-    background-color: #7BC27B;
-    border-color: #54B154;
+    background-color: #8CCA8C;
+    border-color: #7DC77D;
 }
 .rsvp-form .btn-group .btn-danger {
     background-color: #D6706C;
@@ -198,4 +198,9 @@ input[type="checkbox"].input-validation-error {
     }
 }
 
+.rsvp-form .form-group textarea.note {
+    width: 100%;
+    max-width: 400px;
+    height: 100px;
+}
 

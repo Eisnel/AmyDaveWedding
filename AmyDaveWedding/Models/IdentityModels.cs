@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using System.Data.Entity;
 
 namespace AmyDaveWedding.Models
 {
@@ -9,7 +10,6 @@ namespace AmyDaveWedding.Models
         public ApplicationUser() : base()
         {
             CreationDate = DateTime.Now;
-            Attending = false;
         }
 
         public Invitee Invitee { get; set; }
@@ -33,6 +33,8 @@ namespace AmyDaveWedding.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Invitee> Invitees { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection")
         {

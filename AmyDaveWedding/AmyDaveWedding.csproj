@@ -275,6 +275,8 @@
     </Content>
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Account\Rsvp.cshtml" />
+    <Content Include="Views\Account\NoInvitee.cshtml" />
+    <Content Include="Views\Account\RsvpConfirm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\services\" />

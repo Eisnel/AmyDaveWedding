@@ -10,14 +10,60 @@
         $(document).ready(function () {
             $("[data-toggle='tooltip']").tooltip();
             $("[data-toggle='popover']").popover();
-        });
 
-        // http://stackoverflow.com/questions/11703093/how-to-dismiss-a-twitter-bootstrap-popover-by-clicking-outside
-        $('body').on('click', function (e) {
-            if ($(e.target).data('toggle') !== 'popover'
-                && $(e.target).parents('.popover.in').length === 0) {
-                // did not click a popover toggle or popover
-                $('[data-toggle="popover"]').popover('hide');
+            // http://stackoverflow.com/questions/11703093/how-to-dismiss-a-twitter-bootstrap-popover-by-clicking-outside
+            $('body').on('click', function (e) {
+                if ($(e.target).data('toggle') !== 'popover'
+                    && $(e.target).parents('.popover.in').length === 0) {
+                    // did not click a popover toggle or popover
+                    $('[data-toggle="popover"]').popover('hide');
+                }
+            });
+
+            //$('input[type=radio]').change(function () {
+            //    $this = $(this);
+            //    window.console && console.log( "radio button clicked: " + $this.attr('name') );
+            //    window.console && console.log(this);
+
+            //    $parent = $this.parents('.btn-group');
+            //    $parent.find('input[type=radio]').attr('checked', false);
+
+            //    window.console && console.log('parent .btn-group: ' + $parent.attr('class'));
+            //    $parent.each(function (index) {
+            //        window.console && console.log('parent ' + index + ':');
+            //        window.console && console.log($(this));
+            //    });
+
+            //    $this.attr('checked', true);
+            //});
+
+            var $checkedInputs = $('input[type=radio][checked=checked]');
+            window.console && console.log('checked inputs: ' + $checkedInputs.length);
+            $checkedInputs.parent('label').addClass('active');
+
+            registerRadioButtonChange('.form-group.attending');
+            registerRadioButtonChange('.form-group.plus-one-known');
+            registerRadioButtonChange('.form-group.child-count');
+            registerRadioButtonChange('.form-group.interested-in-child-care');
+
+            function registerRadioButtonChange( btnGroupSelector ) {
+                var $btnGroup = $(btnGroupSelector);
+                var $inputs = $btnGroup.find('input[type=radio]');
+                window.console && console.log('input count: ' + $inputs.length);
+                $inputs.change(function () {
+
+                    $this = $(this);
+
+                    $btnGroup.find('input[type=radio]').attr('checked', false);
+
+                    window.console && console.log('parent .btn-group: ' + $btnGroup.attr('class'));
+                    $btnGroup.each(function (index) {
+                        window.console && console.log('btnGroup ' + index + ':');
+                        window.console && console.log(this);
+                    });
+
+                    $this.attr('checked', true);
+                });
             }
         });
     </script>
@@ -25,49 +71,49 @@
 
 <div class="rsvp">
 
-    <h2>Rsvp</h2>
+    <h2>Répondez S'il Vous Plaît</h2>
+    <h4>for @ViewBag.InviteeName</h4>
 
     @using (Html.BeginForm("Rsvp", "Account", FormMethod.Post, new { @class = "rsvp-form form-horizontal", role = "form" }))
     {
         @Html.AntiForgeryToken()
 
         <div class="">
-            <h4>RsvpModel</h4>
             <hr />
             @Html.ValidationSummary(true)
-            <div class="form-group">
-                <div class="col-sm-5 col-md-5">
+            <div class="form-group attending">
+                <div class="col-sm-5 col-md-4">
                     <label class="Xcontrol-label" for="Attending">Are you attending our wedding?</label>
                     <p class="">
-                        Note: You can return at any time and change this.
+                        You can return at any time and change this.
                         If you're unsure, please give us your best guess,
                         and modify this when you know for sure.
                     </p>
                 </div>
-                <div class="col-sm-7 col-md-7">
-                    <div class="btn-group hidden-sm" data-toggle="buttons">
+                <div class="col-sm-7 col-md-8">
+                    <div class="btn-group hidden-xs hidden-sm" data-toggle="buttons">
                         <label class="btn btn-lg btn-success">
-                            <input type="radio" name="Attending" @(Model.Attending == true ? "checked" : "")>Yes, I'm Attending
+                            <input type="radio" name="Attending" value="true" @(Model.Attending == true ? "checked=checked" : "")>Yes, I'm Attending
                         </label>
                         <label class="btn btn-lg btn-danger">
-                            <input type="radio" name="Attending" @(Model.Attending == false ? "checked" : "")>Regretfully Not Attending
+                            <input type="radio" name="Attending" value="false" @(Model.Attending == false ? "checked=checked" : "")>Regretfully Not Attending
                         </label>
                     </div>
-                    <div class="btn-group visible-sm" data-toggle="buttons">
+                    <div class="btn-group visible-xs visible-sm" data-toggle="buttons">
                         <label class="btn btn-lg btn-success">
-                            <input type="radio" name="Attending" @(Model.Attending == true ? "checked" : "")>Yes
+                            <input type="radio" name="XAttending" value="true" @(Model.Attending == true ? "checked=checked" : "")>Yes
                         </label>
                         <label class="btn btn-lg btn-danger">
-                            <input type="radio" name="Attending" @(Model.Attending == false ? "checked" : "")>No
+                            <input type="radio" name="XAttending" value="false" @(Model.Attending == false ? "checked=checked" : "")>No
                         </label>
                     </div>
                 </div>
             </div>
             <hr/>
-            <div class="form-group">
+            <div class="form-group plus-one-known">
                 @if (ViewBag.PlusOneKnown == true)
                 {
-                    <div class="col-sm-5 col-md-5">
+                    <div class="col-sm-5 col-md-4">
                         <label class="Xcontrol-label" for="PlusOneAttending">Is your significant other attending?</label>
                         <p class="">
                             Your S.O. can also login to the site and RSVP.
@@ -77,7 +123,7 @@
                 }
                 else
                 {
-                    <div class="col-sm-5 col-md-5">
+                    <div class="col-sm-5 col-md-4">
                         <label class="Xcontrol-label" for="PlusOneAttending">Are you bringing a date?</label>
                         <p class="">
                             If you have a significant other or are dating someone, you're welcome to bring them.
@@ -91,31 +137,31 @@
                         </button>
                     </div>
                 }
-                <div class="col-sm-7 col-md-7">
+                <div class="col-sm-7 col-md-8">
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-lg btn-success">
-                            <input type="radio" name="PlusOneAttending" id="PlusOneAttending_Yes" @(Model.PlusOneAttending == true ? "checked" : "")>Yes
+                            <input type="radio" name="PlusOneAttending" value="true" @(Model.PlusOneAttending == true ? "checked=checked" : "")>Yes
                         </label>
                         <label class="btn btn-lg btn-danger">
-                            <input type="radio" name="PlusOneAttending" id="PlusOneAttending_No" @(Model.PlusOneAttending == false ? "checked" : "")>No
+                            <input type="radio" name="PlusOneAttending" value="false" @(Model.PlusOneAttending == false ? "checked=checked" : "")>No
                         </label>
                     </div>
                 </div>
             </div>
             <hr/>
-            <div class="form-group">
-                <div class="col-sm-5 col-md-5">
+            <div class="form-group child-count">
+                <div class="col-sm-5 col-md-4">
                     <label class="Xcontrol-label" for="ChildCount">Are you bringing children?</label>
                     <p class="">
                         
                     </p>
                 </div>
-                <div class="col-sm-7 col-md-7">
+                <div class="col-sm-7 col-md-8">
                     <div class="btn-group" data-toggle="buttons">
-                        @foreach( int i in Enumerable.Range(0,6) )
+                        @foreach (int i in Enumerable.Range(0, 6))
                         {
-                            <label class="btn btn-lg btn-default">
-                                <input type="radio" name="ChildCount" id="ChildCount_@i" value="@i" @(Model.ChildCount == i ? "checked" : "")>@i
+                            <label class='btn btn-lg btn-default @(Model.ChildCount == i ? "active" : "")'>
+                                <input type="radio" name="ChildCount" id="ChildCount_@i" value="@i" @(Model.ChildCount == i ? "checked=checked" : "")>@i
                             </label>
                         }
                     </div>
@@ -123,43 +169,39 @@
                 </div>
             </div>
             <hr />
-            <div class="form-group">
-                <div class="col-sm-5 col-md-5">
+            <div class="form-group interested-in-child-care">
+                <div class="col-sm-5 col-md-4">
                     <label class="Xcontrol-label" for="InterestedInChildCare">Are you interested in child care?</label>
                     <p class="">
                         Although we can't provide child care directly,
                         we can help by putting you in touch with other out-of-town parents who are interested in child care.
                     </p>
                 </div>
-                <div class="col-sm-7 col-md-7">
+                <div class="col-sm-7 col-md-8">
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-lg btn-success">
-                            <input type="radio" name="InterestedInChildCare" id="InterestedInChildCare_Yes" @(Model.InterestedInChildCare == true ? "checked" : "")>Yes
+                            <input type="radio" name="InterestedInChildCare" value="true" @(Model.InterestedInChildCare == true ? "checked=checked" : "")>Yes
                         </label>
                         <label class="btn btn-lg btn-danger">
-                            <input type="radio" name="InterestedInChildCare" id="InterestedInChildCare_No" @(Model.InterestedInChildCare == false ? "checked" : "")>No
+                            <input type="radio" name="InterestedInChildCare" value="false" @(Model.InterestedInChildCare == false ? "checked=checked" : "")>No
                         </label>
                     </div>
                 </div>
             </div>
             <hr />
             <div class="form-group">
-                <div class="col-sm-5 col-md-5">
-                    <label class="Xcontrol-label" for="Note">Note for the bride &amp; groom</label>
-                    <p class="">
-                        Although we can't provide child care directly,
-                        we can help by putting you in touch with other out-of-town parents who are interested in child care.
-                    </p>
+                <div class="col-sm-5 col-md-4">
+                    <label class="Xcontrol-label" for="Note">Message for the bride &amp; groom</label>
                 </div>
-                <div class="col-sm-7 col-md-7">
-                    @Html.EditorFor(model => model.Note)
+                <div class="col-sm-7 col-md-8">
+                    <textarea class="note" name="Note"></textarea>
                     @Html.ValidationMessageFor(model => model.Note)
                 </div>
             </div>
-            <hr />
+            
             <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Save" class="btn btn-default" />
+                <div class="col-md-12">
+                    <input type="submit" value="Save" class="btn btn-lg btn-primary" />
                 </div>
             </div>
         </div>

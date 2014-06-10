@@ -16,6 +16,7 @@ using System.Net.Http.Headers;
 using AmyDaveWedding.Helpers;
 using System.Text;
 using System.Diagnostics;
+using EisnelShared;
 
 namespace AmyDaveWedding.Controllers
 {
@@ -25,6 +26,9 @@ namespace AmyDaveWedding.Controllers
         public AccountController()
         {
             ApplicationContext = new ApplicationDbContext();
+            ApplicationContext.Configuration.LazyLoadingEnabled = false;
+            ApplicationContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+
             UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(ApplicationContext));
 
             WeddingContext = new WeddingContext();
@@ -42,21 +46,45 @@ namespace AmyDaveWedding.Controllers
 
         private WeddingContext WeddingContext { get; set; }
 
+        private async Task<ApplicationUser> LoadCurrentUserAsync()
+        {
+            return await FindUserByIdAsync(User.Identity.GetUserId());
+        }
+
+        private async Task<ApplicationUser> FindUserByIdAsync(string userId)
+        {
+            var user = await ApplicationContext.Users.Include(u => u.Invitee).FirstOrDefaultAsync(u => u.Id == userId);
+            //var user = await ApplicationContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            //await ApplicationContext.Entry(user).Reference(u => u.Invitee).LoadAsync();
+            return user;
+        }
+
         //
         // GET: /Account/Rsvp
         public async Task<ActionResult> Rsvp()
         {
             RsvpModel model;
 
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            // string userId = User.Identity.GetUserId();
+            //var user = await UserManager.FindByIdAsync(userId);
+            // var user = await ApplicationContext.Users.Include("Invitee").FirstOrDefaultAsync(u => u.Id == userId);
+            var user = await LoadCurrentUserAsync();
             var invitee = user.Invitee;
-            if( invitee != null )
+            if (invitee == null)
             {
+                ViewBag.UserId = User.Identity.GetUserId();
+                return View("NoInvitee");
+            }
+            else
+            {
+                ViewBag.InviteeName = invitee.Name;
+
                 var groupedInvitees = await GetGroupedInvitees(invitee);
                 ViewBag.GroupedInvitees = groupedInvitees;
-                ViewBag.PlusOneKnown = groupedInvitees.Any( i => i.IsKnown );
+                ViewBag.PlusOneKnown = groupedInvitees.Any(i => i.IsKnown);
 
-                model = new RsvpModel() {
+                model = new RsvpModel()
+                {
                     Attending = invitee.Attending,
                     ChildCount = invitee.ChildCount,
                     InterestedInChildCare = invitee.InterestedInChildCare,
@@ -66,19 +94,14 @@ namespace AmyDaveWedding.Controllers
 
                 // Only set model.PlusOneAttending to a non-null value if there's
                 // at least one grouped Invitee with a non-null Attending value:
-                if( groupedInvitees.Any(i => i.Attending == true) )
+                if (groupedInvitees.Any(i => i.Attending == true))
                 {
                     model.PlusOneAttending = true;
                 }
-                else if( groupedInvitees.Any(i => i.Attending == false) )
+                else if (groupedInvitees.Any(i => i.Attending == false))
                 {
                     model.PlusOneAttending = false;
                 }
-            }
-            else
-            {
-                model = new RsvpModel();
-                ViewBag.NoInvitee = true;
             }
 
             return View(model);
@@ -92,21 +115,31 @@ namespace AmyDaveWedding.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = UserManager.FindById(User.Identity.GetUserId());
+                var user = await LoadCurrentUserAsync();
                 var invitee = user.Invitee;
-                if( invitee != null )
+                if (invitee == null)
                 {
+                    ViewBag.UserId = User.Identity.GetUserId();
+                    return View("NoInvitee");
+                }
+                else
+                {
+                    ViewBag.InviteeName = invitee.Name;
+
                     invitee.Attending = model.Attending;
                     user.Attending = model.Attending;
                     user.RsvpDate = DateTime.Now;
 
                     invitee.ChildCount = model.ChildCount;
-                    invitee.InterestedInChildCare = invitee.InterestedInChildCare;
+                    invitee.InterestedInChildCare = model.InterestedInChildCare;
+                    invitee.Note = model.Note;
 
+                    var groupedInvitees = await GetGroupedInvitees(invitee);
+                    ViewBag.GroupedInvitees = groupedInvitees;
+                    ViewBag.PlusOneKnown = groupedInvitees.Any(i => i.IsKnown);
                     if (model.PlusOneAttending != null)
                     {
                         // Update groups Invitees based on model.PlusOneAttending:
-                        var groupedInvitees = await GetGroupedInvitees(invitee);
                         foreach (var i in groupedInvitees)
                         {
                             i.Attending = model.PlusOneAttending;
@@ -117,7 +150,7 @@ namespace AmyDaveWedding.Controllers
                     await WeddingContext.SaveChangesAsync();
 
                     ViewBag.Attending = invitee.Attending;
-                    return View("RsvpConfirm");
+                    return View("RsvpConfirm", model);
                 }
             }
 
@@ -127,11 +160,12 @@ namespace AmyDaveWedding.Controllers
 
         private async Task<IEnumerable<Invitee>> GetGroupedInvitees(Invitee invitee)
         {
+            //bool b = invitee.Group.NullOrWhiteSpace();
             if (string.IsNullOrWhiteSpace(invitee.Group))
             {
                 return Enumerable.Empty<Invitee>();
             }
-            var query = WeddingContext.Invitees.Where(i => i.Group == invitee.Group && i != invitee);
+            var query = ApplicationContext.Invitees.Where(i => i.Group == invitee.Group && i.Id != invitee.Id);
             return await query.ToListAsync();
         }
 
@@ -534,7 +568,7 @@ namespace AmyDaveWedding.Controllers
                 }
                 var zipCode = model.ZipCode.Trim();
 
-                var query = WeddingContext.Invitees.Where(i => i.LockedFromUserAssignment == false && i.ZipCode == zipCode);
+                var query = ApplicationContext.Invitees.Where(i => !i.LockedFromUserAssignment && i.IsKnown && i.ZipCode == zipCode);
                 if (!string.IsNullOrWhiteSpace(lastName))
                 {
                     query = query.Where(i => i.Name.Contains(lastName));
@@ -572,7 +606,13 @@ namespace AmyDaveWedding.Controllers
                         return View("ExternalLoginFailure");
                     }
                     Invitee invitee = invitees.First();
-                    var user = new ApplicationUser() { Invitee = invitee, UserName = model.UserName, Email = model.Email };
+                    var user = new ApplicationUser()
+                    {
+                        Invitee = invitee,
+                        UserName = model.UserName,
+                        Email = model.Email,
+                        Name = model.Name
+                    };
                     var result = await UserManager.CreateAsync(user);
                     if (result.Succeeded)
                     {

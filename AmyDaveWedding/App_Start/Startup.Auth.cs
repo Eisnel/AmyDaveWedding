@@ -3,7 +3,6 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
 using System.Configuration;
-using EisnelShared;
 using System.Diagnostics;
 using AmyDaveWedding.Helpers;
 

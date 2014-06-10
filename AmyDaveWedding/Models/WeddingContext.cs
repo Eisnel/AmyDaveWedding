@@ -20,6 +20,6 @@ namespace AmyDaveWedding.Models
         {
         }
 
-        public DbSet<Invitee> Invitees { get; set; }
+        //public DbSet<Invitee> Invitees { get; set; }
     }
 }

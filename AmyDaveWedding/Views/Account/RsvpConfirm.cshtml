@@ -1,0 +1,21 @@
+﻿@model AmyDaveWedding.Models.RsvpModel
+
+@{
+    Layout = "~/Views/Account/_AccountLayout.cshtml";
+    ViewBag.Title = "RsvpConfirm";
+}
+
+<h2>Thank you for responding!</h2>
+
+@if( Model.Attending == true )
+{
+    <p>Text if they are attending.</p>
+}
+else
+{
+    <p>Text if they are not attending.</p>
+}
+
+<p>
+    Remember that you can return and change your RSVP at any time.
+</p>
