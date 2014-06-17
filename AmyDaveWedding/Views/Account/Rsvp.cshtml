@@ -49,20 +49,20 @@
             function registerRadioButtonChange( btnGroupSelector ) {
                 var $btnGroup = $(btnGroupSelector);
                 var $inputs = $btnGroup.find('input[type=radio]');
-                window.console && console.log('input count: ' + $inputs.length);
+                window.console && console.log('radio input count for selector ' + btnGroupSelector + ': ' + $inputs.length);
                 $inputs.change(function () {
 
                     $this = $(this);
 
-                    $btnGroup.find('input[type=radio]').attr('checked', false);
+                    $btnGroup.find('input[type=radio]').prop("checked", false);
 
-                    window.console && console.log('parent .btn-group: ' + $btnGroup.attr('class'));
+                    window.console && console.log('onChange ' + btnGroupSelector + ': parent .btn-group: ' + $btnGroup.attr('class'));
                     $btnGroup.each(function (index) {
-                        window.console && console.log('btnGroup ' + index + ':');
+                        window.console && console.log('   btnGroup ' + index + ':');
                         window.console && console.log(this);
                     });
 
-                    $this.attr('checked', true);
+                    $this.prop("checked", true);
                 });
             }
         });
@@ -83,7 +83,7 @@
             @Html.ValidationSummary(true)
             <div class="form-group attending">
                 <div class="col-sm-5 col-md-4">
-                    <label class="Xcontrol-label" for="Attending">Are you attending our wedding?</label>
+                    <label class="Xcontrol-label" xfor="Attending">Are you attending our wedding?</label>
                     <p class="">
                         You can return at any time and change this.
                         If you're unsure, please give us your best guess,
@@ -93,18 +93,14 @@
                 <div class="col-sm-7 col-md-8">
                     <div class="btn-group hidden-xs hidden-sm" data-toggle="buttons">
                         <label class="btn btn-lg btn-success">
-                            <input type="radio" name="Attending" value="true" @(Model.Attending == true ? "checked=checked" : "")>Yes, I'm Attending
+                            <input type="radio" name="Attending" value="true" @(Model.Attending == true ? "checked=checked" : "")>
+                            <span class="hidden-xs">Yes, I'm Attending</span>
+                            <span class="visible-xs">Yes</span>
                         </label>
                         <label class="btn btn-lg btn-danger">
-                            <input type="radio" name="Attending" value="false" @(Model.Attending == false ? "checked=checked" : "")>Regretfully Not Attending
-                        </label>
-                    </div>
-                    <div class="btn-group visible-xs visible-sm" data-toggle="buttons">
-                        <label class="btn btn-lg btn-success">
-                            <input type="radio" name="XAttending" value="true" @(Model.Attending == true ? "checked=checked" : "")>Yes
-                        </label>
-                        <label class="btn btn-lg btn-danger">
-                            <input type="radio" name="XAttending" value="false" @(Model.Attending == false ? "checked=checked" : "")>No
+                            <input type="radio" name="Attending" value="false" @(Model.Attending == false ? "checked=checked" : "")>
+                            <span class="hidden-xs">Regretfully Not Attending</span>
+                            <span class="visible-xs">No</span>
                         </label>
                     </div>
                 </div>
@@ -140,10 +136,10 @@
                 <div class="col-sm-7 col-md-8">
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-lg btn-success">
-                            <input type="radio" name="PlusOneAttending" value="true" @(Model.PlusOneAttending == true ? "checked=checked" : "")>Yes
+                            <input type="radio" name="PlusOneAttending" value="true" @(Model.PlusOneAttending == true ? "checked=checked" : "")/>Yes
                         </label>
                         <label class="btn btn-lg btn-danger">
-                            <input type="radio" name="PlusOneAttending" value="false" @(Model.PlusOneAttending == false ? "checked=checked" : "")>No
+                            <input type="radio" name="PlusOneAttending" value="false" @(Model.PlusOneAttending == false ? "checked=checked" : "")/>No
                         </label>
                     </div>
                 </div>
