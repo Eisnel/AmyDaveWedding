@@ -45,7 +45,19 @@ namespace AmyDaveWedding
                       "~/app/songApp.js",
                       "~/app/directives.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/weddingJavaScript").Include(
+                      "~/Scripts/respond.js",
+                      "~/Scripts/jquery-{version}.js",
+                      "~/Scripts/jquery.smoothscroll.js",
+                      "~/Scripts/bootstrap.js",
+                      "~/Scripts/wedding-home.js"));
+
             // CSS:
+
+            bundles.Add(new StyleBundle("~/Content/weddingCss").Include(
+                      "~/Content/bootstrap.css",
+                      "~/Content/font-awesome.css",
+                      "~/Content/theme.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",

@@ -196,6 +196,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\theme.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
@@ -203,8 +204,21 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\site.css" />
+    <Content Include="Images\Chalkboard_280.png" />
+    <Content Include="Images\Chalkboard_340.png" />
     <Content Include="Images\Coral_Charm_Peonies.jpg" />
     <Content Include="Images\Coral_Charm_Peonies_767.jpg" />
+    <Content Include="Images\lock_closeup.png" />
+    <Content Include="Images\Macaroon_background.jpg" />
+    <Content Include="Images\Macaroon_background_767.jpg" />
+    <Content Include="Images\map_1.jpg" />
+    <Content Include="Images\map_doubletree.jpg" />
+    <Content Include="Images\Minneapolis_skyline_spoon_painted_cropped.jpg" />
+    <Content Include="Images\Minneapolis_skyline_spoon_painted_cropped_small.jpg" />
+    <Content Include="Images\noise.png" />
+    <Content Include="Images\o20.png" />
+    <Content Include="Images\o50.png" />
+    <Content Include="Images\squiggle.png" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />
     <Content Include="Scripts\angular-mocks.js" />
@@ -227,6 +241,8 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.smoothscroll.js" />
+    <Content Include="Scripts\jquery.smoothscroll.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -237,6 +253,7 @@
     <Content Include="Scripts\site.js" />
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
+    <Content Include="Scripts\wedding-home.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -277,6 +294,10 @@
     <Content Include="Views\Account\Rsvp.cshtml" />
     <Content Include="Views\Account\NoInvitee.cshtml" />
     <Content Include="Views\Account\RsvpConfirm.cshtml" />
+    <Content Include="Views\Home\PartialContact.cshtml" />
+    <Content Include="Views\Home\PartialGifts.cshtml" />
+    <Content Include="Views\Home\PartialTitle.cshtml" />
+    <Content Include="Views\Home\PartialWedding.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\services\" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,6 +11,8 @@ namespace AmyDaveWedding.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.GoogleAnalyticsTrackingID = ConfigurationManager.AppSettings["GoogleAnalyticsTrackingID"];
+
             return View();
         }
 

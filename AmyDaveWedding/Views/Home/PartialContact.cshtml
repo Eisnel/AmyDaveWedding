@@ -1,0 +1,148 @@
+﻿@{
+    // Layout = null;
+}
+
+<div>
+    <a id="venue"></a>
+</div>
+
+<!-- start: contact -->
+<div class="contact">
+    <div class="container">
+
+        <div class="page-header">
+            <h1>Location</h1>
+        </div>
+        @*<h2 class="slogan">Ut eleifend malesuada quam vel dictum odio pellentesque sit amet.</h2>*@
+
+        @*<!-- Solera -->
+    <div class="row-fluid">
+
+        <div class="col-sm-6">
+            <h3>Solera</h3>
+            <p>Ut eleifend malesuada quam vel dictum odio pellentesque sit amet. Ut eleifend malesuada quam vel dictum odio pellentesque sit amet.</p>
+        </div>
+        <div class="col-sm-6">
+            <!-- Google Map -->
+            <div class="map">
+                <iframe width="100%" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                        src="https://maps.google.com/maps?t=m&amp;cid=0x2162cd76c8d03887&amp;ie=UTF8&amp;hq=&amp;hnear=&amp;ll=44.975304,-93.284428&amp;spn=0.05064,0.095448&amp;output=embed"></iframe>
+                <br />
+                <a target="_blank" href="https://maps.google.com/maps?t=m&amp;cid=0x2162cd76c8d03887&amp;ie=UTF8&amp;hq=&amp;hnear=&amp;ll=44.975304,-93.284428&amp;spn=0.05064,0.095448&amp;source=embed">
+                    View Larger Map
+                </a>
+            </div>
+        </div>
+
+    </div>*@ @* row end *@
+
+        @*<!-- Google Map for Solera -->
+        <div class="map">
+            <iframe width="100%" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                    src="https://maps.google.com/maps?t=m&amp;cid=0x2162cd76c8d03887&amp;ie=UTF8&amp;hq=&amp;hnear=&amp;ll=44.975304,-93.284428&amp;spn=0.05064,0.095448&amp;output=embed"></iframe>
+            <br />
+            <a target="_blank" href="https://maps.google.com/maps?t=m&amp;cid=0x2162cd76c8d03887&amp;ie=UTF8&amp;hq=&amp;hnear=&amp;ll=44.975304,-93.284428&amp;spn=0.05064,0.095448&amp;source=embed">
+                View Larger Map
+            </a>
+        </div>*@
+
+
+        <div class="row">
+            <div class="col-sm-12 col-md-10 col-md-offset-1 element">
+
+                <h3>Venue</h3>
+
+                <p>
+                    Solera Cocina de Espana is located in downtown Minneapolis, on the corner of Hennepin Ave and 9th Street.
+                    The first floor houses a well-regarded Spanish &ldquo;tapas&rdquo; restaurant.
+                    Our ceremony will be on the rooftop, followed by a cocktail reception in the &ldquo;Barcelona Room&rdquo; on the second floor.
+                    Look for the event entrance near the main entrance on Hennepin Ave.
+                </p>
+
+                <div class="row">
+                    <div class="xcol-xs-5 xcol-xs-offset-1 xcol-sm-10 xcol-sm-offset-1 xcol-md-5 map-thumb">
+                       
+                        <a href='@Html.Raw("https://www.google.com/maps/place/Solera/@44.976454,-93.277245,17z/data=!3m1!4b1!4m2!3m1!1s0x52b33293f57ba077:0x2162cd76c8d03887")'>
+                            <img class="img-map-thumb" src="~/Images/map_1.jpg" alt="" />
+                        </a>
+                    </div>
+                    <div class="info-box col-xs-7 xcol-sm-10 xcol-sm-offset-1 xcol-md-7">
+                        <div class="address">
+                            900 Hennepin Ave <br />
+                            Minneapolis, MN 55403
+                        </div>
+                        <div class="contact-info">
+                            <a href="tel:6123380062">(612)&nbsp;338&#8209;0062</a> <br />
+                            <a href="http://www.solera-restaurant.com/">website</a>
+                        </div>
+                    </div>
+                </div>
+            </div>            
+
+            <div class="col-sm-6 col-md-5 col-md-offset-1 element">
+
+                <h3>Hotel 1</h3>
+
+                <p>
+                    Le Meridian Chambers is an upscale hotel located directly across the street from the venue.
+                    This is where Dave <span class="ampersand">&</span> Amy will be staying.
+                    The room rate for our block is $179 ($203 after taxes/fees).
+                    You can book a room in our block through a special website:
+                    <a href="https://www.starwoodmeeting.com/StarGroupsWeb/booking/reservation?id=1402056434&key=6386A">Keast/Poyas Wedding booking site</a>,
+                    or by calling (612)&nbsp;767&#8209;6900.
+                </p>
+
+                <div class="row">
+                    <div class="map-thumb xcol-xs-5 xcol-xs-offset-1 xcol-sm-10 xcol-sm-offset-1 xcol-md-5">
+                        <img class="img-map-thumb" src="~/Images/map_1.jpg" alt="" />
+                    </div>
+                    <div class="info-box col-xs-7 xcol-sm-10 xcol-sm-offset-1 xcol-md-7">
+                        <div class="address">
+                            901 Hennepin Avenue, <br />
+                            Minneapolis, MN, 55403
+                        </div>
+                        <div class="contact-info">
+                            <a href="tel:6127676900">(612)&nbsp;767&#8209;6900</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-md-5 element">
+
+                <h3>Hotel 2</h3>
+
+                <p>
+                    Doubletree Suites is two blocks east and south of the venue.  
+                    Included in each suite is a kitchenette and pull-out couch.  
+                    This is where Dave&#8217;s immediate family will be staying.
+                    The room rate for our block is $109 ($124 after taxes/fees).
+                    You can book a room in our block through a special website:
+                    <a href="http://doubletree.hilton.com/en/dt/groups/personalized/M/MSPLSDT-KPW-20140905/index.jhtml">Keast/Poyas Wedding booking site</a>,
+                    or by calling (612)&nbsp;332&#8209;6800.
+                </p>
+
+                <div class="row">
+                    <div class="map-thumb xcol-xs-5 xcol-xs-offset-1 xcol-sm-10 xcol-sm-offset-1 xcol-md-5">
+                        <img class="img-map-thumb" src="~/Images/map_doubletree.jpg" alt="" />
+                    </div>
+                    <div class="info-box col-xs-7 xcol-sm-10 xcol-sm-offset-1 xcol-md-7">
+                        <div class="address">
+                            1101 LaSalle Avenue <br />
+                            Minneapolis, MN, 55403
+                        </div>
+                        <div class="contact-info">
+                            <a href="tel:6123326800">(612)&nbsp;332&#8209;6800</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div> @* row end *@
+
+
+    </div>
+    <div class="bottomSpaceFiller">
+    </div>
+</div>
+<!-- end: contact -->
