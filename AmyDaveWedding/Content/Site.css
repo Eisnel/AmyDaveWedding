@@ -58,6 +58,16 @@ input[type="checkbox"].input-validation-error {
     -moz-border-radius-topleft: 0px;
     -moz-border-radius-topright: 0px;
     border-radius: 0 0 9px 9px;
+    font-family: 'Oleo Script', cursive;
+    font-size: 20px;
+}
+.navbar .navbar-brand {
+    font-size: 20px;
+    padding-left: 22px;
+}
+.navbar ul li a:active,
+.navbar ul li a.active {
+    background-color: #3a3a3a;
 }
 .navbar-affixed {
     margin-bottom: 0;
@@ -161,6 +171,9 @@ input[type="checkbox"].input-validation-error {
     }
 }
 
+.rsvp h4 {
+    padding-left: 10px;
+}
 .rsvp-form .btn-group .btn {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-size: 17.5px;
@@ -204,3 +217,10 @@ input[type="checkbox"].input-validation-error {
     height: 100px;
 }
 
+.rsvp-confirm h2,
+.rsvp-confirm p {
+    margin-bottom: 16px;
+}
+.rsvp-confirm .rsvp-change {
+    font-style: italic;
+}

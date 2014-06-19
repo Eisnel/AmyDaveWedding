@@ -450,6 +450,29 @@ hr {
     margin-bottom: 0;
   }
 }
+
+.header-wrap .rsvp {
+    margin-top: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: rgba(255, 8, 97, 0.48);
+    border-color: #FFFFFF;
+    border-width: 2px;
+    border-radius: 8px;
+    color: white;
+    font-size: 36px;
+    font-family: 'Oleo Script', cursive;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+@media (max-width: 640px) {
+    .header-wrap .rsvp {
+        margin-top: -80px;
+        padding-left: 12px;
+        padding-right: 12px;
+        font-size: 32px;
+    }
+}
+
 /* ========================================================================== */
 /* Welcome Line
 /* ========================================================================== */

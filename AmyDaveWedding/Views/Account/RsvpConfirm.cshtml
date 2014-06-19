@@ -5,17 +5,23 @@
     ViewBag.Title = "RsvpConfirm";
 }
 
-<h2>Thank you for responding!</h2>
+<div class="rsvp-confirm">
 
-@if( Model.Attending == true )
-{
-    <p>Text if they are attending.</p>
-}
-else
-{
-    <p>Text if they are not attending.</p>
-}
+    <h2>Thank you for responding!</h2>
 
-<p>
-    Remember that you can return and change your RSVP at any time.
-</p>
+    @if (Model.Attending == true)
+    {
+        <p>Text if they are attending.</p>
+    }
+    else
+    {
+        <p>Text if they are not attending.</p>
+    }
+
+    <p class="rsvp-change">
+        Remember that you can return and update your RSVP at any time.
+    </p>
+
+    <a href="/" class="btn btn-default">Return to Home Page</a>
+
+</div>
