@@ -69,6 +69,9 @@ input[type="checkbox"].input-validation-error {
 .navbar ul li a.active {
     background-color: #3a3a3a;
 }
+.navbar ul.navbar-right li:last-child a {
+    padding-right: 22px;
+}
 .navbar-affixed {
     margin-bottom: 0;
 }
@@ -180,18 +183,18 @@ input[type="checkbox"].input-validation-error {
 }
 .rsvp-form .btn-group .btn-success {
     background-color: #8CCA8C;
-    border-color: #7DC77D;
+    border-color: #B7D5B7;
 }
 .rsvp-form .btn-group .btn-danger {
-    background-color: #E08D8A;
-    border-color: #E68380;
+    background-color: #EBA4A2;
+    border-color: #EB9390;
 }
 .rsvp-form .btn-group .btn-success:hover,
 .rsvp-form .btn-group .btn-success:focus,
 .rsvp-form .btn-group .btn-success:active,
 .rsvp-form .btn-group .btn-success.active {
     background-color: #5cb85c;
-    border-color: #398439;
+    border-color: #6EA56E;
 }
 .rsvp-form .btn-group .btn-danger:hover,
 .rsvp-form .btn-group .btn-danger:focus,
@@ -219,8 +222,9 @@ input[type="checkbox"].input-validation-error {
 
 .rsvp-confirm h2,
 .rsvp-confirm p {
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 .rsvp-confirm .rsvp-change {
     font-style: italic;
+    margin-left: 6px;
 }
