@@ -13,10 +13,13 @@
 @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl, LoginProvider = ViewBag.LoginProvider }, FormMethod.Post, new { id = "ext-conf-form", @class = "form-horizontal", role = "form" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.UserName)
     @Html.HiddenFor(m => m.InviteeId)
 
     @Html.ValidationSummary(true)
+    
+    //var errors = Html.ValidationSummary(true);
+    //var state = Html.ViewData.ModelState;
+    //var valid = Html.ViewData.ModelState.IsValid;
 
     if (ViewBag.MatchingInvitees != null && ViewBag.MatchingInvitees.Count > 0)
     {
@@ -59,6 +62,20 @@
                 Use the zip code that we sent your invitation to.
             </p>
 
+            @if (Html.ViewData.ModelState.IsValidField("UserName"))
+            {
+                @Html.HiddenFor(m => m.UserName)
+            }
+            else
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </div>
+                </div>
+            }
             <div class="form-group">
                 @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
                 <div class="col-md-10">
@@ -80,6 +97,14 @@
                     @Html.ValidationMessageFor(m => m.ZipCode)
                 </div>
             </div>
+            @if (!Html.ViewData.ModelState.IsValid)
+            {
+                <div class="form-group">
+                    <p class="col-md-offset-2 col-md-10">
+                        If you're having difficulty logging in, please contact Dave or Amy and we'll get you setup.
+                    </p>
+                </div>
+            }
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
                     <input type="submit" class="btn btn-success" value="Register" />

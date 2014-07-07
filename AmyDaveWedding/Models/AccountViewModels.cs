@@ -38,7 +38,7 @@ namespace AmyDaveWedding.Models
         public string Email { get; set; }
 
         [Required]
-        [StringLength(255, MinimumLength = 5, ErrorMessage = "This is too short. Please enter your first and last name (to verify that you're on our list)")]
+        [StringLength(255, MinimumLength = 5, ErrorMessage = "This is too short. Please enter your first and last name")]
         [Display(Name = "Full Name")]
         public string Name { get; set; }
 

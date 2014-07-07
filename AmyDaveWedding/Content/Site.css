@@ -148,7 +148,7 @@ input[type="checkbox"].input-validation-error {
 
 /* External Login Confirmation */
 
-#ext-conf-form p {
+#ext-conf-form .user-info > p {
     margin-bottom: 20px;
 }
 
@@ -189,13 +189,15 @@ input[type="checkbox"].input-validation-error {
     background-color: #EBA4A2;
     border-color: #EB9390;
 }
+/* when the "yes" button is active or hovered/focused: */
 .rsvp-form .btn-group .btn-success:hover,
 .rsvp-form .btn-group .btn-success:focus,
 .rsvp-form .btn-group .btn-success:active,
 .rsvp-form .btn-group .btn-success.active {
-    background-color: #5cb85c;
+    background-color: #37BD37;
     border-color: #6EA56E;
 }
+/* when the "no" button is active or hovered/focused: */
 .rsvp-form .btn-group .btn-danger:hover,
 .rsvp-form .btn-group .btn-danger:focus,
 .rsvp-form .btn-group .btn-danger:active,

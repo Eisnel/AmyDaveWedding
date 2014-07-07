@@ -1,6 +1,10 @@
 ﻿@{
+    Layout = "~/Views/Account/_AccountLayout.cshtml";
     ViewBag.Title = "Login Failure";
 }
+<!-- ExternalLoginFailure -->
 
 <h2>@ViewBag.Title.</h2>
 <h3 class="text-error">Unsuccessful login with service.</h3>
+
+<div class="btn btn-default">@Html.ActionLink("Try Again", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</div>

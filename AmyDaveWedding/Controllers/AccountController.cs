@@ -30,9 +30,6 @@ namespace AmyDaveWedding.Controllers
             ApplicationContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
 
             UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(ApplicationContext));
-
-            WeddingContext = new WeddingContext();
-            WeddingContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
 
         //public AccountController(UserManager<ApplicationUser> userManager)
@@ -43,8 +40,6 @@ namespace AmyDaveWedding.Controllers
         private ApplicationDbContext ApplicationContext { get; set; }
 
         private UserManager<ApplicationUser> UserManager { get; set; }
-
-        private WeddingContext WeddingContext { get; set; }
 
         private async Task<ApplicationUser> LoadCurrentUserAsync()
         {
@@ -147,7 +142,6 @@ namespace AmyDaveWedding.Controllers
                     }
 
                     await ApplicationContext.SaveChangesAsync();
-                    await WeddingContext.SaveChangesAsync();
 
                     ViewBag.Attending = invitee.Attending;
                     return View("RsvpConfirm", model);
@@ -706,7 +700,19 @@ namespace AmyDaveWedding.Controllers
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("", error);
+                string modelField = "";
+                if (error != null)
+                {
+                    if (error.Contains(" is already taken"))
+                    {
+                        modelField = "UserName";
+                    }
+                    else if (error.StartsWith("User name "))
+                    {
+                        modelField = "UserName";
+                    }
+                }
+                ModelState.AddModelError(modelField, error);
             }
         }
 
