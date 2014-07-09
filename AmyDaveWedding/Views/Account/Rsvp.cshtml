@@ -72,7 +72,7 @@
 <div class="rsvp">
 
     <h2>Répondez S'il Vous Plaît</h2>
-    <h4>for @ViewBag.InviteeName</h4>
+    <h4>for @ViewBag.Invitee.Name</h4>
 
     @using (Html.BeginForm("Rsvp", "Account", FormMethod.Post, new { @class = "rsvp-form form-horizontal", role = "form" }))
     {
@@ -81,6 +81,7 @@
         <div class="">
             <hr />
             @Html.ValidationSummary(true)
+
             <div class="form-group attending">
                 <div class="col-sm-5 col-md-4">
                     <label class="Xcontrol-label" xfor="Attending">Are you attending our wedding?</label>
@@ -105,6 +106,7 @@
                 </div>
             </div>
             <hr/>
+
             <div class="form-group plus-one-known">
                 @if (ViewBag.PlusOneKnown == true)
                 {
@@ -144,6 +146,7 @@
                 </div>
             </div>
             <hr/>
+
             <div class="form-group child-count">
                 <div class="col-sm-5 col-md-4">
                     <label class="Xcontrol-label" for="ChildCount">Are you bringing children?</label>
@@ -164,6 +167,7 @@
                 </div>
             </div>
             <hr />
+
             @*<div class="form-group interested-in-child-care">
                 <div class="col-sm-5 col-md-4">
                     <label class="Xcontrol-label" for="InterestedInChildCare">Are you interested in child care?</label>
@@ -184,6 +188,32 @@
                 </div>
             </div>
             <hr />*@
+
+            @if (ViewBag.Invitee != null && ViewBag.Invitee.InvitedToRehearsal)
+            {
+                <div class="form-group attending-rehearsal">
+                    <div class="col-sm-5 col-md-4">
+                        <label class="Xcontrol-label" for="AttendingRehearsal">Rehearsal Dinner / Family Picnic?</label>
+                        <p class="">
+                            We're combining our rehearsal dinner with a picnic for our out-of-town family, and you're invited.
+                            It's on Friday afternoon/evening in Maple Grove. Please let us know if you think you can attend.
+                            You'll find the address and more information in the Location section of the home page.
+                        </p>
+                    </div>
+                    <div class="col-sm-7 col-md-8">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-lg btn-success">
+                                <input type="radio" name="AttendingRehearsal" value="true" @(Model.AttendingRehearsal == true ? "checked=checked" : "")>Yes
+                            </label>
+                            <label class="btn btn-lg btn-danger">
+                                <input type="radio" name="AttendingRehearsal" value="false" @(Model.AttendingRehearsal == false ? "checked=checked" : "")>No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            }
+
             <div class="form-group">
                 <div class="col-sm-5 col-md-4">
                     <label class="Xcontrol-label" for="Note">Message for the bride &amp; groom</label>

@@ -46,8 +46,12 @@ namespace AmyDaveWedding.Controllers
             return await FindUserByIdAsync(User.Identity.GetUserId());
         }
 
-        private async Task<ApplicationUser> FindUserByIdAsync(string userId)
+        public async Task<ApplicationUser> FindUserByIdAsync(string userId)
         {
+            if( string.IsNullOrEmpty(userId) )
+            {
+                return null;
+            }
             var user = await ApplicationContext.Users.Include(u => u.Invitee).FirstOrDefaultAsync(u => u.Id == userId);
             //var user = await ApplicationContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
             //await ApplicationContext.Entry(user).Reference(u => u.Invitee).LoadAsync();
@@ -64,7 +68,7 @@ namespace AmyDaveWedding.Controllers
             //var user = await UserManager.FindByIdAsync(userId);
             // var user = await ApplicationContext.Users.Include("Invitee").FirstOrDefaultAsync(u => u.Id == userId);
             var user = await LoadCurrentUserAsync();
-            var invitee = user.Invitee;
+            var invitee = user != null ? user.Invitee : null;
             if (invitee == null)
             {
                 ViewBag.UserId = User.Identity.GetUserId();
@@ -72,7 +76,8 @@ namespace AmyDaveWedding.Controllers
             }
             else
             {
-                ViewBag.InviteeName = invitee.Name;
+                ViewBag.Invitee = invitee;
+                // ViewBag.InviteeName = invitee.Name;
 
                 var groupedInvitees = await GetGroupedInvitees(invitee);
                 ViewBag.GroupedInvitees = groupedInvitees;
@@ -83,7 +88,8 @@ namespace AmyDaveWedding.Controllers
                     Attending = invitee.Attending,
                     ChildCount = invitee.ChildCount,
                     InterestedInChildCare = invitee.InterestedInChildCare,
-                    RsvpDate = user.RsvpDate,
+                    AttendingRehearsal = invitee.AttendingRehearsal,
+                    // RsvpDate = user.RsvpDate,
                     Note = invitee.Note
                 };
 
@@ -111,7 +117,7 @@ namespace AmyDaveWedding.Controllers
             if (ModelState.IsValid)
             {
                 var user = await LoadCurrentUserAsync();
-                var invitee = user.Invitee;
+                var invitee = user != null ? user.Invitee : null;
                 if (invitee == null)
                 {
                     ViewBag.UserId = User.Identity.GetUserId();
@@ -119,14 +125,18 @@ namespace AmyDaveWedding.Controllers
                 }
                 else
                 {
-                    ViewBag.InviteeName = invitee.Name;
+                    ViewBag.Invitee = invitee;
+                    // ViewBag.InviteeName = invitee.Name;
 
-                    invitee.Attending = model.Attending;
                     user.Attending = model.Attending;
                     user.RsvpDate = DateTime.Now;
 
+                    invitee.Attending = model.Attending;
+                    invitee.RsvpDate = user.RsvpDate;
+
                     invitee.ChildCount = model.ChildCount;
                     invitee.InterestedInChildCare = model.InterestedInChildCare;
+                    invitee.AttendingRehearsal = model.AttendingRehearsal;
                     invitee.Note = model.Note;
 
                     var groupedInvitees = await GetGroupedInvitees(invitee);

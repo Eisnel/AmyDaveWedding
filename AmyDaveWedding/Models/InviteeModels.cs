@@ -14,6 +14,7 @@ namespace AmyDaveWedding.Models
             Group = "";
             IsKnown = false;
             ChildCount = 0;
+            InvitedToRehearsal = false;
             InternalNotes = "";
             Note = "";
         }
@@ -38,9 +39,15 @@ namespace AmyDaveWedding.Models
 
         public bool? InterestedInChildCare { get; set; }
 
+        public bool InvitedToRehearsal { get; set; }
+
+        public bool? AttendingRehearsal { get; set; }
+
         public string InternalNotes { get; set; }
 
         public string Note { get; set; }
+
+        public DateTime? RsvpDate { get; set; }
     }
 
     public class RsvpModel
@@ -58,9 +65,12 @@ namespace AmyDaveWedding.Models
         [Display(Name = "Interested in Child Care")]
         public bool? InterestedInChildCare { get; set; }
 
+        [Display(Name = "Rehearsal Dinner & Family Picnic")]
+        public bool? AttendingRehearsal { get; set; }
+
         [Display(Name = "Note to the Bride and Groom")]
         public string Note { get; set; }
 
-        public DateTime? RsvpDate { get; set; }
+        // public DateTime? RsvpDate { get; set; }
     }
 }

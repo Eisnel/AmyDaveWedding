@@ -1,5 +1,15 @@
 ﻿@{
     // Layout = null;
+    
+    string venueBootstrapClasses;
+    if (ViewBag.Invitee != null && ViewBag.Invitee.InvitedToRehearsal)
+    {
+        venueBootstrapClasses = "col-sm-6 col-md-5 col-md-offset-1";
+    }
+    else
+    {
+        venueBootstrapClasses = "col-sm-12 col-md-10 col-md-offset-1";
+    }
 }
 
 <div>
@@ -13,45 +23,12 @@
         <div class="page-header">
             <h1>Location</h1>
         </div>
-        @*<h2 class="slogan">Ut eleifend malesuada quam vel dictum odio pellentesque sit amet.</h2>*@
-
-        @*<!-- Solera -->
-    <div class="row-fluid">
-
-        <div class="col-sm-6">
-            <h3>Solera</h3>
-            <p>Ut eleifend malesuada quam vel dictum odio pellentesque sit amet. Ut eleifend malesuada quam vel dictum odio pellentesque sit amet.</p>
-        </div>
-        <div class="col-sm-6">
-            <!-- Google Map -->
-            <div class="map">
-                <iframe width="100%" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                        src="https://maps.google.com/maps?t=m&amp;cid=0x2162cd76c8d03887&amp;ie=UTF8&amp;hq=&amp;hnear=&amp;ll=44.975304,-93.284428&amp;spn=0.05064,0.095448&amp;output=embed"></iframe>
-                <br />
-                <a target="_blank" href="https://maps.google.com/maps?t=m&amp;cid=0x2162cd76c8d03887&amp;ie=UTF8&amp;hq=&amp;hnear=&amp;ll=44.975304,-93.284428&amp;spn=0.05064,0.095448&amp;source=embed">
-                    View Larger Map
-                </a>
-            </div>
-        </div>
-
-    </div>*@ @* row end *@
-
-        @*<!-- Google Map for Solera -->
-        <div class="map">
-            <iframe width="100%" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                    src="https://maps.google.com/maps?t=m&amp;cid=0x2162cd76c8d03887&amp;ie=UTF8&amp;hq=&amp;hnear=&amp;ll=44.975304,-93.284428&amp;spn=0.05064,0.095448&amp;output=embed"></iframe>
-            <br />
-            <a target="_blank" href="https://maps.google.com/maps?t=m&amp;cid=0x2162cd76c8d03887&amp;ie=UTF8&amp;hq=&amp;hnear=&amp;ll=44.975304,-93.284428&amp;spn=0.05064,0.095448&amp;source=embed">
-                View Larger Map
-            </a>
-        </div>*@
-
-
+        
         <div class="row">
-            <div class="col-sm-12 col-md-10 col-md-offset-1 element">
+            <div class="@venueBootstrapClasses element">
 
                 <h3>Venue</h3>
-
+                
                 <p>
                     Solera Cocina de Espana is located in downtown Minneapolis, on the corner of Hennepin Ave and 9th Street.
                     The first floor houses a well-regarded Spanish &ldquo;tapas&rdquo; restaurant.
@@ -61,7 +38,7 @@
 
                 <div class="row">
                     <div class="xcol-xs-5 xcol-xs-offset-1 xcol-sm-10 xcol-sm-offset-1 xcol-md-5 map-thumb">
-                       
+
                         <a href='@Html.Raw("https://www.google.com/maps/place/Solera/@44.976454,-93.277245,17z/data=!3m1!4b1!4m2!3m1!1s0x52b33293f57ba077:0x2162cd76c8d03887")'>
                             <img class="img-map-thumb" src="~/Images/map_1.jpg" alt="" />
                         </a>
@@ -77,8 +54,23 @@
                         </div>
                     </div>
                 </div>
-            </div>            
+            </div>
 
+            @if (ViewBag.Invitee != null && ViewBag.Invitee.InvitedToRehearsal)
+            {
+                <div class="col-sm-6 col-md-5 element">
+                    <h3>Rehearsal Dinner &amp Family Picnic</h3>
+
+                    <p>
+                       ...
+                    </p>
+
+
+                </div>
+            }
+        </div>
+
+        <div class="row">
             <div class="col-sm-6 col-md-5 col-md-offset-1 element">
 
                 <h3>Hotel 1</h3>
