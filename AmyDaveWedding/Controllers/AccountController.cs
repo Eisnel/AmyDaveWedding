@@ -26,7 +26,8 @@ namespace AmyDaveWedding.Controllers
         public AccountController()
         {
             ApplicationContext = new ApplicationDbContext();
-            ApplicationContext.Configuration.LazyLoadingEnabled = false;
+            // Setting LazyLoadingEnabled to false breaks UserManager.GetLogins(userId).
+            //ApplicationContext.Configuration.LazyLoadingEnabled = false;
             ApplicationContext.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
 
             UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(ApplicationContext));
@@ -222,6 +223,13 @@ namespace AmyDaveWedding.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            if( true )
+            {
+                // This site doesn't support registration with a username/password.
+                // We're only allowing social network logins.
+                return View(model);
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser() { UserName = model.UserName, Email = model.Email };
@@ -672,7 +680,8 @@ namespace AmyDaveWedding.Controllers
         [ChildActionOnly]
         public ActionResult RemoveAccountList()
         {
-            var linkedAccounts = UserManager.GetLogins(User.Identity.GetUserId());
+            var userId = User.Identity.GetUserId();
+            var linkedAccounts = UserManager.GetLogins(userId);
             ViewBag.ShowRemoveButton = HasPassword() || linkedAccounts.Count > 1;
             return (ActionResult)PartialView("_RemoveAccountPartial", linkedAccounts);
         }

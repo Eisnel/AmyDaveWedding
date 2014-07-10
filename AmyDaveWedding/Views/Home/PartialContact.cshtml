@@ -24,11 +24,11 @@
             <h1>Location</h1>
         </div>
         
-        <div class="row">
+        <div class="row first-row">
             <div class="@venueBootstrapClasses element">
 
                 <h3>Venue</h3>
-                
+
                 <p>
                     Solera Cocina de Espana is located in downtown Minneapolis, on the corner of Hennepin Ave and 9th Street.
                     The first floor houses a well-regarded Spanish &ldquo;tapas&rdquo; restaurant.
@@ -59,18 +59,40 @@
             @if (ViewBag.Invitee != null && ViewBag.Invitee.InvitedToRehearsal)
             {
                 <div class="col-sm-6 col-md-5 element">
-                    <h3>Rehearsal Dinner &amp Family Picnic</h3>
+                    <h3>Rehearsal Dinner &amp; Family Picnic</h3>
 
                     <p>
-                       ...
+                        On Friday, we're combining our Rehearsal Dinner
+                        with a picnic for our out-of-town family <span class="ampersand">&</span> friends.
+                        If you're reading this then you're invited.
+                        We've rented a pavilion in Maple Grove's Elm Creek park, ___.
+                        We'll setup at 5:00pm and wrap 9:00pm.
+                        Our plot has a sand volleyball court, and it's located next to a massive playground to occupy the kids.
+                        Food will be provided (probably from Chipotle),
+                        as will soft drinks and some adult beverages
+                        (you can bring your own too; beer <span class="ampersand">&amp;</span> wine are allowed, but not boxed wine).
+
                     </p>
 
-
+                    <div class="row">
+                        <div class="map-thumb xcol-xs-5 xcol-xs-offset-1 xcol-sm-10 xcol-sm-offset-1 xcol-md-5">
+                            <img class="img-map-thumb" src="~/Images/map_1.jpg" alt="" />
+                        </div>
+                        <div class="info-box col-xs-7 xcol-sm-10 xcol-sm-offset-1 xcol-md-7">
+                            <div class="address">
+                                ____, <br />
+                                Maple Grove, MN, __
+                            </div>
+                            <div class="contact-info">
+                                <a href="http://www.threeriversparks.org/parks/elm-creek-park.aspx">website</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             }
         </div>
 
-        <div class="row">
+        <div class="row second-row">
             <div class="col-sm-6 col-md-5 col-md-offset-1 element">
 
                 <h3>Hotel 1</h3>

@@ -13,7 +13,10 @@
             <img class="img-logo" src="~/Images/Chalkboard_280.png">
         </div>
 
-        <a href="/Account/Rsvp" class="rsvp btn btn-default">Click here to <span>RSVP</span></a>
+        @if (ViewBag.Invitee == null || ViewBag.Invitee.Attending == null)
+        {
+            <a href="/Account/Rsvp" class="rsvp btn btn-default">Click here to <span>RSVP</span></a>
+        }
 
         @*<div class="img-circle centerWithJavaScript">
 
