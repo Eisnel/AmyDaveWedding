@@ -211,12 +211,16 @@
     <Content Include="Images\Macaroon_background.jpg" />
     <Content Include="Images\Macaroon_background_767.jpg" />
     <Content Include="Images\map_1.jpg" />
-    <Content Include="Images\map_doubletree.jpg" />
+    <Content Include="Images\map_2.jpg" />
+    <Content Include="Images\map_3.jpg" />
     <Content Include="Images\Minneapolis_skyline_spoon_painted_cropped.jpg" />
     <Content Include="Images\Minneapolis_skyline_spoon_painted_cropped_small.jpg" />
     <Content Include="Images\noise.png" />
     <Content Include="Images\o20.png" />
     <Content Include="Images\o50.png" />
+    <Content Include="Images\park_map.png" />
+    <Content Include="Images\park_map_thumb.jpg" />
+    <Content Include="Images\park_playground.jpg" />
     <Content Include="Images\squiggle.png" />
     <Content Include="Scripts\angular-animate.js" />
     <Content Include="Scripts\angular-animate.min.js" />

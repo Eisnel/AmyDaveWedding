@@ -85,6 +85,10 @@ h1 {
     font-size: 28px;
 }*/
 
+a {
+    cursor: pointer;
+    cursor: hand;
+}
 a,
 a:hover {
   text-decoration: none;
@@ -97,6 +101,10 @@ hr {
 }
 .ampersand {
     font-family: 'Great Vibes', cursive;
+    margin-right: 2px;
+}
+.tilde {
+    font-family: 'Arial', sans-serif;
 }
 .navbar {
     /*font-family: 'Merienda', cursive;*/
@@ -1286,6 +1294,11 @@ hr {
     min-height: 1px;
     padding-right: 15px;
     padding-left: 15px;
+}
+@media (min-width: 902px) {
+    .contact .modal-image-840 .modal-dialog {
+        width: 902px;
+    }
 }
 .contact .slogan {
   border-top: solid 1px #555555;
