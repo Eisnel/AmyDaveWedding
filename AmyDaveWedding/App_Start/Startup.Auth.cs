@@ -5,6 +5,8 @@ using Owin;
 using System.Configuration;
 using System.Diagnostics;
 using AmyDaveWedding.Helpers;
+using EisnelShared;
+using System.Text;
 
 namespace AmyDaveWedding
 {
@@ -47,6 +49,8 @@ namespace AmyDaveWedding
                 {
                     //Debug.WriteLine("Facebook AppId encrypted: " + facebookCredentials.Key.Encrypt());
                     //Debug.WriteLine("Facebook AppSecret encrypted: " + facebookCredentials.Secret.Encrypt());
+                    Debug.WriteLine("Facebook AppId: " + facebookCredentials.Key);
+                    Debug.WriteLine("Facebook AppId AES encrypted: " + facebookCredentials.Key.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8));
                     app.UseFacebookAuthentication(
                        appId: facebookCredentials.Key,
                        appSecret: facebookCredentials.Secret);

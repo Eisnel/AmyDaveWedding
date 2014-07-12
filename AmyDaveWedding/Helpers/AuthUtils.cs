@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using AmyDaveWedding.Helpers;
 using AmyDaveWedding.Models;
+using System.Text;
 
 namespace AmyDaveWedding.Helpers
 {
@@ -45,7 +46,7 @@ namespace AmyDaveWedding.Helpers
                 string keyEncrypted = ConfigurationManager.AppSettings[keyEncryptedName];
                 if (!string.IsNullOrWhiteSpace(keyEncrypted))
                 {
-                    key = keyEncrypted.Decrypt();
+                    key = Decrypt(keyEncrypted);
                 }
                 if (string.IsNullOrWhiteSpace(key))
                 {
@@ -59,7 +60,7 @@ namespace AmyDaveWedding.Helpers
                 string secretEncrypted = ConfigurationManager.AppSettings[secretEncryptedName];
                 if (!string.IsNullOrWhiteSpace(secretEncrypted))
                 {
-                    secret = secretEncrypted.Decrypt();
+                    secret = Decrypt(secretEncrypted);
                 }
                 if (string.IsNullOrWhiteSpace(secret))
                 {
@@ -68,6 +69,30 @@ namespace AmyDaveWedding.Helpers
             }
 
             return new ApiCredential(key, secret);
+        }
+
+        private static string Decrypt(string cipherText)
+        {
+            string cryptoType = ConfigurationManager.AppSettings["Crypo.Type"];
+            if (string.Equals(cryptoType, "DPAPI", StringComparison.OrdinalIgnoreCase))
+            {
+                return cipherText.DecryptDpApi(Encoding.UTF8);
+            }
+            else
+            {
+                string keyHex = GetAesKey();
+                if (string.IsNullOrEmpty(keyHex))
+                {
+                    throw new ConfigurationErrorsException("ApiCredentialSource.Decrypt: 'Crypto.AesKey' config contains no value.");
+                }
+
+                return cipherText.DecryptAes(keyHex, Encoding.UTF8);
+            }
+        }
+
+        public static string GetAesKey()
+        {
+            return ConfigurationManager.AppSettings["Crypto.AesKey"];
         }
 
         //private static string GetAppSetting(string unencryptedName, string encryptedName)
