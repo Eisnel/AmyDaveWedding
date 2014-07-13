@@ -55,11 +55,13 @@ namespace AmyDaveWedding
             // CSS:
 
             bundles.Add(new StyleBundle("~/Content/weddingCss").Include(
+                      "~/Content/theme-fonts.css",
                       "~/Content/bootstrap.css",
                       "~/Content/font-awesome.css",
                       "~/Content/theme.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
+                      "~/Content/site-fonts.css",
                       "~/Content/bootstrap.css",
                       "~/Content/font-awesome.css",
                       "~/Content/toastr.css",
