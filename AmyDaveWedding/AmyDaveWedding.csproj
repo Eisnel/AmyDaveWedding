@@ -316,7 +316,7 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EisnelShared\EisnelShared\EisnelShared.csproj">
+    <ProjectReference Include="..\EisnelShared\EisnelShared.csproj">
       <Project>{431e91f4-c66c-4f0e-875f-6ffdb2999f9e}</Project>
       <Name>EisnelShared</Name>
     </ProjectReference>
