@@ -35,12 +35,12 @@ namespace AmyDaveWedding
                 {
                     //Debug.WriteLine("Twitter AppId encrypted: " + twitterKey.Encrypt());
                     //Debug.WriteLine("Twitter AppSecret encrypted: " + twitterSecret.Encrypt());
-                    Debug.WriteLine("Twitter AppId: " + twitterCredentials.Key);
-                    string keyDpApi = twitterCredentials.Key.EncryptDpApi(Encoding.UTF8);
-                    string secretDpApi = twitterCredentials.Secret.EncryptDpApi(Encoding.UTF8);
-                    string keyAes = twitterCredentials.Key.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
-                    string secretAes = twitterCredentials.Secret.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
-                    string keyRoundTrip = keyAes.DecryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
+                    //Debug.WriteLine("Twitter AppId: " + twitterCredentials.Key);
+                    //string keyDpApi = twitterCredentials.Key.EncryptDpApi(Encoding.UTF8);
+                    //string secretDpApi = twitterCredentials.Secret.EncryptDpApi(Encoding.UTF8);
+                    //string keyAes = twitterCredentials.Key.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
+                    //string secretAes = twitterCredentials.Secret.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
+                    //string keyRoundTrip = keyAes.DecryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
                     
                     app.UseTwitterAuthentication(
                        consumerKey: twitterCredentials.Key,
@@ -56,12 +56,12 @@ namespace AmyDaveWedding
                 {
                     //Debug.WriteLine("Facebook AppId encrypted: " + facebookCredentials.Key.Encrypt());
                     //Debug.WriteLine("Facebook AppSecret encrypted: " + facebookCredentials.Secret.Encrypt());
-                    Debug.WriteLine("Facebook AppId: " + facebookCredentials.Key);
-                    string keyDpApi = facebookCredentials.Key.EncryptDpApi(Encoding.UTF8);
-                    string secretDpApi = facebookCredentials.Secret.EncryptDpApi(Encoding.UTF8);
-                    string keyAes = facebookCredentials.Key.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
-                    string secretAes = facebookCredentials.Secret.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
-                    string keyRoundTrip = keyAes.DecryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
+                    //Debug.WriteLine("Facebook AppId: " + facebookCredentials.Key);
+                    //string keyDpApi = facebookCredentials.Key.EncryptDpApi(Encoding.UTF8);
+                    //string secretDpApi = facebookCredentials.Secret.EncryptDpApi(Encoding.UTF8);
+                    //string keyAes = facebookCredentials.Key.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
+                    //string secretAes = facebookCredentials.Secret.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
+                    //string keyRoundTrip = keyAes.DecryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
 
                     app.UseFacebookAuthentication(
                        appId: facebookCredentials.Key,
