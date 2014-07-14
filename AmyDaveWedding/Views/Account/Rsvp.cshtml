@@ -87,20 +87,20 @@
                     <label class="Xcontrol-label" xfor="Attending">Are you attending our wedding?</label>
                     <p class="">
                         You can come back and change this at any time.
-                        If you're unsure, please give us your best guess.
+                        So if you're unsure, please give us your best guess.
                     </p>
                 </div>
                 <div class="col-sm-7 col-md-8">
-                    <div class="btn-group hidden-xs hidden-sm" data-toggle="buttons">
+                    <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-lg btn-success">
                             <input type="radio" name="Attending" value="true" @(Model.Attending == true ? "checked=checked" : "")>
-                            <span class="hidden-xs">Yes, I'm Attending</span>
-                            <span class="visible-xs">Yes</span>
+                            <span class="hidden-xs hidden-sm">Yes, I'm Attending</span>
+                            <span class="visible-xs visible-sm">Yes</span>
                         </label>
                         <label class="btn btn-lg btn-danger">
                             <input type="radio" name="Attending" value="false" @(Model.Attending == false ? "checked=checked" : "")>
-                            <span class="hidden-xs">Regretfully Not Attending</span>
-                            <span class="visible-xs">No</span>
+                            <span class="hidden-xs hidden-sm">Regretfully Not Attending</span>
+                            <span class="visible-xs visible-sm">No</span>
                         </label>
                     </div>
                 </div>
@@ -121,10 +121,10 @@
                 else
                 {
                     <div class="col-sm-5 col-md-4">
-                        <label class="Xcontrol-label" for="PlusOneAttending">Are you bringing a date?</label>
+                        <label class="Xcontrol-label" for="PlusOneAttending">Are you bringing a guest?</label>
                         <p class="">
                             @*If you have a significant other or are dating someone, you're welcome to bring them.*@
-                            If your plans change before the wedding, you can come back and update this.
+                            If your plans change you can come back and update this.
                         </p>
                         @*<button type="button" class="popover-button btn btn-default" data-container="body"
                                 data-toggle="popover" data-placement="bottom"
@@ -151,7 +151,7 @@
                 <div class="col-sm-5 col-md-4">
                     <label class="Xcontrol-label" for="ChildCount">Are you bringing children?</label>
                     <p class="">
-                        
+                        And if so, how many?
                     </p>
                 </div>
                 <div class="col-sm-7 col-md-8">
@@ -214,7 +214,7 @@
                 <hr />
             }
 
-            <div class="form-group">
+            <div class="form-group note">
                 <div class="col-sm-5 col-md-4">
                     <label class="Xcontrol-label" for="Note">Message for the bride &amp; groom</label>
                 </div>

@@ -115,10 +115,11 @@ namespace AmyDaveWedding.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Rsvp(RsvpModel model)
         {
+            var user = await LoadCurrentUserAsync();
+            var invitee = user != null ? user.Invitee : null;
+            ViewBag.Invitee = invitee;
             if (ModelState.IsValid)
             {
-                var user = await LoadCurrentUserAsync();
-                var invitee = user != null ? user.Invitee : null;
                 if (invitee == null)
                 {
                     ViewBag.UserId = User.Identity.GetUserId();
@@ -126,9 +127,6 @@ namespace AmyDaveWedding.Controllers
                 }
                 else
                 {
-                    ViewBag.Invitee = invitee;
-                    // ViewBag.InviteeName = invitee.Name;
-
                     user.Attending = model.Attending;
                     user.RsvpDate = DateTime.Now;
 
@@ -159,7 +157,7 @@ namespace AmyDaveWedding.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form
+            // If we got this far, something failed, so redisplay form
             return View(model);
         }
 
@@ -609,15 +607,59 @@ namespace AmyDaveWedding.Controllers
                     }
                 }
 
-                if (invitees.Count() == 1)
+                // Let's see if we found a matching Invitee that we can use
+                // without asking the user for further confirmation.
+                bool matchFound = false;
+                if (invitees.Count() == 1 && model.InviteeId != null)
                 {
+                    // Then we found one match, and it's the InviteeId
+                    // that was passed in the model. That means that we
+                    // already showed the user a confirmation page asking
+                    // him/her to verify which Invitee they are, and they
+                    // selected one. So we're good to go.
+                    matchFound = true;
+                }
+                else
+                {
+                    // Then we found one matching Invitee,
+                    // and there was no model.InviteeId passed
+                    // (which means that we haven't already asked
+                    // this user to pick which invitee they are).
+                    // Our search is fairly permissive.
+                    // If the match isn't exact, we'll simply ask
+                    // the user to verify that we've got it right.
+                    // This may happen due to people using shortened
+                    // forms of their names, in which case it won't be
+                    // a big deal. But this could also happen because
+                    // we've gotten a name wrong. They'll still be able
+                    // to login and attach to that Invitee, but at least
+                    // this will prompt them to contact us and make
+                    // a correction to our records.
+                    var match = invitees.First();
+                    if (string.Equals(match.Name, fullName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        // It's an exact match (case insensitive).
+                        matchFound = true;
+                    }
+                    // If it's not an exact match, that doesn't meant that we can't use it.
+                    // It means that we want to show it to the user for verification.
+                    // Maybe they searched for "Jack Doe" at zip code 55555
+                    // and we found the Invitee for "John Doe" at the same zip code.
+                    // So show this to the user so that they can verify that this is
+                    // the same person (matchFound is already false, so leave it that way).
+                }
+
+                if (matchFound)
+                {
+                    var invitee = invitees.First();
+
                     // Get the information about the user from the external login provider
                     var info = await AuthenticationManager.GetExternalLoginInfoAsync();
                     if (info == null)
                     {
                         return View("ExternalLoginFailure");
                     }
-                    Invitee invitee = invitees.First();
+
                     var user = new ApplicationUser()
                     {
                         Invitee = invitee,
@@ -637,17 +679,16 @@ namespace AmyDaveWedding.Controllers
                     }
                     AddErrors(result);
                 }
-                else if( invitees.Count() > 1 )
+                else if( invitees.Any() )
                 {
-                    // Multiple Invitees matched this criteria.
+                    // Then we don't have an excact match, but we've got at lesat one potential match.
                     // Redisplay the form and request that they pick an Invitee.
+                    // If there's only one Invitee then we're just asking them to verify.
                     ViewBag.MatchingInvitees = invitees;
                 }
                 else
                 {
                     // Then no matching Invitees were found.
-                    // TODO: Set an error then redisplay the form.
-
                     ModelState.AddModelError("Name", "Cannot find an invitee with this name/zip combo.");
                     ModelState.AddModelError("ZipCode", "Cannot find an invitee with this name/zip combo.");
                     ViewBag.NoInviteeFound = true;

@@ -69,6 +69,7 @@ namespace AmyDaveWedding.Models
         public bool? AttendingRehearsal { get; set; }
 
         [Display(Name = "Note to the Bride and Groom")]
+        [StringLength(5000, ErrorMessage = "Please limit your note to 5,000 characters")]
         public string Note { get; set; }
 
         // public DateTime? RsvpDate { get; set; }

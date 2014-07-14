@@ -209,10 +209,14 @@ input[type="checkbox"].input-validation-error {
     }
 }
 
-.rsvp-form .form-group textarea.note {
+.rsvp-form .form-group.note textarea {
     width: 100%;
     max-width: 400px;
     height: 100px;
+}
+
+.rsvp-form .form-group.note span.field-validation-error {
+    display: block;
 }
 
 .rsvp-confirm h2,
