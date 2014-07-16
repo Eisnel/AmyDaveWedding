@@ -84,7 +84,7 @@
 
             <div class="form-group attending">
                 <div class="col-sm-5 col-md-4">
-                    <label class="Xcontrol-label" xfor="Attending">Are you attending our wedding?</label>
+                    <label class="Xcontrol-label" for="Attending">Are you attending our wedding?</label>
                     <p class="">
                         You can come back and change this at any time.
                         So if you're unsure, please give us your best guess.
@@ -104,6 +104,7 @@
                         </label>
                     </div>
                 </div>
+                @Html.ValidationMessageFor(m => m.Attending)
             </div>
             <hr/>
 

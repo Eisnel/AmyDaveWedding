@@ -354,6 +354,8 @@ namespace AmyDaveWedding.Controllers
 
         //
         // GET: /Account/ExternalLoginCallback
+        // A number of vendor-specific URIs are routed here,
+        // such as: /signin-google
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
@@ -606,6 +608,17 @@ namespace AmyDaveWedding.Controllers
                         invitees = matchesId;
                     }
                 }
+                else if( invitees.Count() > 1 && lastName != null )
+                {
+                    // Then we did a search by lastName and found multiple matches.
+                    // Let's see if any of these were exact matches of the fullName,
+                    // and if so use that instead.
+                    var matchesFullName = invitees.Where(i => string.Equals(i.Name, fullName, StringComparison.OrdinalIgnoreCase)).ToList();
+                    if (matchesFullName.Any())
+                    {
+                        invitees = matchesFullName;
+                    }
+                }
 
                 // Let's see if we found a matching Invitee that we can use
                 // without asking the user for further confirmation.
@@ -619,7 +632,7 @@ namespace AmyDaveWedding.Controllers
                     // selected one. So we're good to go.
                     matchFound = true;
                 }
-                else
+                else if (invitees.Count() == 1)
                 {
                     // Then we found one matching Invitee,
                     // and there was no model.InviteeId passed

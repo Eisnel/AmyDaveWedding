@@ -3,6 +3,11 @@
     Layout = "~/Views/Account/_AccountLayout.cshtml";
     ViewBag.Title = "Register";
 }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<!-- ExternalLoginConfirmation -->
 
 <h2>Register</h2>
 <p class="text-info">
@@ -118,8 +123,10 @@
             </div>
         </div>
     }
+
+    <p class="contact-us">
+        If you have trouble logging in, please contact Dave or Amy.
+    </p>
 }
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+

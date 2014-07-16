@@ -53,7 +53,7 @@ namespace AmyDaveWedding.Models
     public class RsvpModel
     {
         [Display(Name = "Attending")]
-        [Required]
+        [Required(ErrorMessage = "Please indicate whether you're attending, even if it's a best guess.")]
         public bool? Attending { get; set; }
 
         [Display(Name = "Plus One Attending")]

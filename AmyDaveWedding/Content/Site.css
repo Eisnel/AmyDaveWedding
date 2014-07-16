@@ -129,6 +129,10 @@ input[type="checkbox"].input-validation-error {
     float: left;
     margin-left: 20px;
 }
+#socialLoginForm .contact-us,
+#ext-conf-form .contact-us {
+    margin-top: 24px;
+}
 
 @media (max-width: 767px) {
     #socialLoginList .btn-block {
@@ -201,6 +205,11 @@ input[type="checkbox"].input-validation-error {
 
 .rsvp-form .form-group label {
     font-size: 16px;
+}
+.rsvp-form .form-group .field-validation-error {
+    display: block;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 
 @media(max-width:767px) {

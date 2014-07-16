@@ -41,7 +41,8 @@ namespace AmyDaveWedding
                     //string keyAes = twitterCredentials.Key.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
                     //string secretAes = twitterCredentials.Secret.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
                     //string keyRoundTrip = keyAes.DecryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
-                    
+
+                    // Management portal: https://dev.twitter.com/
                     app.UseTwitterAuthentication(
                        consumerKey: twitterCredentials.Key,
                        consumerSecret: twitterCredentials.Secret);
@@ -63,13 +64,39 @@ namespace AmyDaveWedding
                     //string secretAes = facebookCredentials.Secret.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
                     //string keyRoundTrip = keyAes.DecryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
 
+                    // Management portal: https://developers.facebook.com/apps
                     app.UseFacebookAuthentication(
                        appId: facebookCredentials.Key,
                        appSecret: facebookCredentials.Secret);
                 }
             }
 
-            app.UseGoogleAuthentication();
+            {
+                var googleCredentials = ApiCredentialSource.GoogleCredentials;
+                if (googleCredentials != null)
+                {
+                    //Debug.WriteLine("Google ClientId: " + googleCredentials.Key);
+                    //string keyDpApi = googleCredentials.Key.EncryptDpApi(Encoding.UTF8);
+                    //string secretDpApi = googleCredentials.Secret.EncryptDpApi(Encoding.UTF8);
+                    //Debug.WriteLine("Google googleCredentials.Key encrypted: " + keyDpApi);
+                    //Debug.WriteLine("Google ClientSecret encrypted: " + secretDpApi);
+                    //string keyAes = googleCredentials.Key.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
+                    //string secretAes = googleCredentials.Secret.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
+                    //string keyRoundTrip = keyAes.DecryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
+
+                    // Management portal: https://console.developers.google.com/project
+                    // http://www.asp.net/mvc/tutorials/mvc-5/create-an-aspnet-mvc-5-app-with-facebook-and-google-oauth2-and-openid-sign-on
+                    // This requires Microsoft.Owin.Security.Google 2.1.0.
+                    // Originally I just had 2.0.0 installed.
+                    // Upgrading involved runninng this in the Package Manager Console:
+                    // Update-Package Microsoft.Owin.Security.Google
+                    // http://www.mattburkedev.com/app-dot-usegoogleauthentication-does-not-accept-2-arguments-azure-tutorial/
+                    app.UseGoogleAuthentication(
+                     clientId: googleCredentials.Key,
+                     clientSecret: googleCredentials.Secret);
+                    // app.UseGoogleAuthentication();
+                }
+            }
         }
 
         //private string GetAppSetting( string unencryptedName, string encryptedName )

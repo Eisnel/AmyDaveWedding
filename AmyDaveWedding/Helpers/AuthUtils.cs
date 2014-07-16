@@ -31,6 +31,14 @@ namespace AmyDaveWedding.Helpers
             }
         }
 
+        public static ApiCredential GoogleCredentials
+        {
+            get
+            {
+                return GetApiCredentials("ApiCredentialSource.GoogleCredentials", "Google.ClientId", "Google.ClientIdEncrypted", "Google.ClientSecret", "Google.ClientSecretEncrypted");
+            }
+        }
+
         private static ApiCredential GetApiCredentials(string cacheKey, string keyUnencryptedName, string keyEncryptedName, string secretUnencryptedName, string secretEncryptedName)
         {
             return (ApiCredential)CacheUtils.GetHttpRuntimeCached(cacheKey,
