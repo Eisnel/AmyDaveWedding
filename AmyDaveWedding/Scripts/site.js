@@ -38,7 +38,7 @@ $(function () {
         console.log($this);
         var inviteeId = $this.attr('data-invitee-id');
         $('#ext-conf-form input[name=InviteeId]').val(inviteeId);
-        toastr.info('click: inviteeId: ' + inviteeId);
+        // toastr.info('click: inviteeId: ' + inviteeId);
         $('#ext-conf-form').submit();
     });
     

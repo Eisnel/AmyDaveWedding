@@ -17,6 +17,7 @@ using AmyDaveWedding.Helpers;
 using System.Text;
 using System.Diagnostics;
 using EisnelShared;
+using System.Text.RegularExpressions;
 
 namespace AmyDaveWedding.Controllers
 {
@@ -386,26 +387,32 @@ namespace AmyDaveWedding.Controllers
 
         private async Task<ExternalLoginConfirmationViewModel> GetExternalLoginModel(AuthenticateResult result, ExternalLoginInfo loginInfo)
         {
-            var model = new ExternalLoginConfirmationViewModel() { UserName = loginInfo.DefaultUserName };
-
+            string name = null;
+            string email = null;
             if (loginInfo.Login.LoginProvider == "Facebook")
             {
-                model.Name = GetClaimValue(result.Identity, "urn:facebook:name");
+                name = GetClaimValue(result.Identity, "urn:facebook:name");
             }
             else if (loginInfo.Login.LoginProvider == "Google")
             {
-                model.Name = GetClaimValue(result.Identity, "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
-                model.Email = GetClaimValue(result.Identity, "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
+                name = GetClaimValue(result.Identity, "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
+                email = GetClaimValue(result.Identity, "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress");
             }
             else if (loginInfo.Login.LoginProvider == "Twitter")
             {
-                var userInfo = await GetUserDataFromTwitter(model.UserName);
+                var userInfo = await GetUserDataFromTwitter(loginInfo.DefaultUserName);
                 if (userInfo != null)
                 {
-                    model.Name = userInfo.FullName;
+                    name = userInfo.FullName;
                 }
             }
-            return model;
+
+            var userName = loginInfo.DefaultUserName + loginInfo.Login.LoginProvider;
+            userName += name ?? "";
+            Regex rgx = new Regex("[^a-zA-Z0-9]");
+            userName = rgx.Replace(userName, "");
+
+            return new ExternalLoginConfirmationViewModel() { UserName = userName, Name = name, Email = email };
         }
 
         private string GetClaimValue( ClaimsIdentity ci, string type )
