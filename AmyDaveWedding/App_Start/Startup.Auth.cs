@@ -7,6 +7,7 @@ using System.Diagnostics;
 using AmyDaveWedding.Helpers;
 using EisnelShared;
 using System.Text;
+using Microsoft.Owin.Security.Facebook;
 
 namespace AmyDaveWedding
 {
@@ -55,6 +56,8 @@ namespace AmyDaveWedding
                 var facebookCredentials = ApiCredentialSource.FacebookCredentials;
                 if (facebookCredentials != null)
                 {
+                    // Management portal: https://developers.facebook.com/apps
+
                     //Debug.WriteLine("Facebook AppId encrypted: " + facebookCredentials.Key.Encrypt());
                     //Debug.WriteLine("Facebook AppSecret encrypted: " + facebookCredentials.Secret.Encrypt());
                     //Debug.WriteLine("Facebook AppId: " + facebookCredentials.Key);
@@ -64,10 +67,17 @@ namespace AmyDaveWedding
                     //string secretAes = facebookCredentials.Secret.EncryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
                     //string keyRoundTrip = keyAes.DecryptAes(ApiCredentialSource.GetAesKey(), Encoding.UTF8);
 
-                    // Management portal: https://developers.facebook.com/apps
-                    app.UseFacebookAuthentication(
-                       appId: facebookCredentials.Key,
-                       appSecret: facebookCredentials.Secret);
+                    // What follows is a more complicated way of setting this up,
+                    // but necessary to remove the default "user_friends" scope/permission.
+                    // http://forums.asp.net/t/1927914.aspx?Adding+Facebook+scope+permissions+when+authenticating+users+Owin+
+                    FacebookAuthenticationOptions fbao = new FacebookAuthenticationOptions();
+                    fbao.AppId = facebookCredentials.Key;
+                    fbao.AppSecret = facebookCredentials.Secret;
+                    fbao.Scope.Add("email");
+                    fbao.Scope.Add("public_profile");
+                    // fbao.Scope.Add("user_friends");
+                    fbao.SignInAsAuthenticationType = Microsoft.Owin.Security.AppBuilderSecurityExtensions.GetDefaultSignInAsAuthenticationType(app);
+                    app.UseFacebookAuthentication(fbao);
                 }
             }
 
